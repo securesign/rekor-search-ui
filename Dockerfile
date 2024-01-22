@@ -8,6 +8,7 @@ RUN echo "export PATH=${PATH}:$HOME/node_modules/.bin" >> ~/.bashrc && \
     npm run build && \
     chmod -R 777 /opt/app-root/src/.npm && \
     npm cache clean --force
+USER 1001
 CMD ["npm", "run", "start"]
 
 LABEL \
