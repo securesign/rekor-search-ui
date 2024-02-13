@@ -1,27 +1,27 @@
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
-	Box,
 	Container,
-	CssBaseline,
 	IconButton,
 	Link,
-	ThemeProvider,
 	Typography,
 } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
+import {
+	Page
+} from '@patternfly/react-core';
 import { RekorClientProvider } from "../modules/api/context";
 import { Explorer } from "../modules/components/Explorer";
 import { Settings } from "../modules/components/Settings";
-import { REKOR_SEARCH_THEME } from "../modules/theme/theme";
+import { ReBox } from "../modules/components/wrappers/ReBox";
 
 const Home: NextPage = () => {
 	const [settingsOpen, setSettingsOpen] = useState(false);
 
 	return (
-		<>
+		<Page>
 			<Head>
 				<title>Rekor Search</title>
 				<meta
@@ -34,21 +34,20 @@ const Home: NextPage = () => {
 				/>
 			</Head>
 
-			<ThemeProvider theme={REKOR_SEARCH_THEME}>
-				<CssBaseline />
-
-				<Box
-					sx={{
-						display: "flex",
-						justifyContent: "space-between",
-						alignItems: "center",
-						paddingX: 4,
-						paddingY: 2,
-						background: "white",
-						borderBottom: "1px solid #E3E0E6",
-					}}
+				<ReBox
+					// sx={{
+					// 	display: "flex",
+					// 	justifyContent: "space-between",
+					// 	alignItems: "center",
+					// 	paddingX: 4,
+					// 	paddingY: 2,
+					// 	background: "white",
+					// 	borderBottom: "1px solid #E3E0E6",
+					// }}
 				>
-					<Box sx={{ height: 41, width: 198, position: "relative" }}>
+					<ReBox
+						// sx={{ height: 41, width: 198, position: "relative" }}
+					>
 						<Link
 							href="https://sigstore.dev"
 							target="_blank"
@@ -60,17 +59,17 @@ const Home: NextPage = () => {
 								fill
 							/>
 						</Link>
-					</Box>
+					</ReBox>
 
 					<Typography variant="h4">Rekor Search</Typography>
 
-					<Box
-						sx={{
-							width: 198,
-							display: "flex",
-							justifyContent: "flex-end",
-							alignItems: "center",
-						}}
+					<ReBox
+						// sx={{
+						// 	width: 198,
+						// 	display: "flex",
+						// 	justifyContent: "flex-end",
+						// 	alignItems: "center",
+						// }}
 					>
 						<IconButton
 							sx={{ mr: 2 }}
@@ -95,8 +94,8 @@ const Home: NextPage = () => {
 								height={24}
 							/>
 						</Link>
-					</Box>
-				</Box>
+					</ReBox>
+				</ReBox>
 
 				<Settings
 					open={settingsOpen}
@@ -113,25 +112,26 @@ const Home: NextPage = () => {
 				>
 					<Explorer />
 
-					<Box
-						component="footer"
-						sx={{
-							display: "flex",
-							flexDirection: "column",
-							alignItems: "center",
-							mb: 3,
-							pt: 2,
-						}}
-					></Box>
+					<ReBox
+						// component="footer"
+						// sx={{
+						// 	display: "flex",
+						// 	flexDirection: "column",
+						// 	alignItems: "center",
+						// 	mb: 3,
+						// 	pt: 2,
+						// }}
+					>
+						<></>
+					</ReBox>
 				</Container>
-			</ThemeProvider>
-		</>
+		</Page>
 	);
 };
 
-const Page: NextPage = () => (
+const PageComponent: NextPage = () => (
 	<RekorClientProvider>
 		<Home />
 	</RekorClientProvider>
 );
-export default Page;
+export default PageComponent;
