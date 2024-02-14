@@ -1,27 +1,82 @@
-import SettingsIcon from "@mui/icons-material/Settings";
 import {
-	Container,
-	IconButton,
-	Link,
-	Typography,
+	Container
 } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import { useState } from "react";
 import {
-	Page
-} from '@patternfly/react-core';
+	Button,
+	Masthead,
+	MastheadContent,
+	MastheadMain,
+	Page, Toolbar, ToolbarContent, ToolbarGroup, ToolbarItem
+} from "@patternfly/react-core";
 import { RekorClientProvider } from "../modules/api/context";
 import { Explorer } from "../modules/components/Explorer";
 import { Settings } from "../modules/components/Settings";
-import { ReBox } from "../modules/components/wrappers/ReBox";
+import { CogIcon, GithubIcon } from "@patternfly/react-icons";
+import Link from "next/link";
+import Image from "next/image";
 
 const Home: NextPage = () => {
 	const [settingsOpen, setSettingsOpen] = useState(false);
 
 	return (
-		<Page>
+		<Page header={
+			<Masthead>
+				<MastheadMain>
+					<Link href={"/"} className={"pf-v5-c-masthead_brand"}>
+						<Image
+							className={"pf-v5-c-brand"}
+							src={"/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg"}
+							alt={"Red Hat Trusted Artifact Signer logo"}
+							priority={true}
+							width={198}
+							height={42}
+						/>
+					</Link>
+				</MastheadMain>
+				<MastheadContent>
+					<Toolbar
+						ouiaId="masthead-toolbar"
+						id={"masthead-toolbar"}
+						isFullHeight
+						isStatic
+					>
+						<ToolbarContent id={"masthead-toolbar"}>
+							<ToolbarGroup
+								variant="icon-button-group"
+								align={{ default: "alignRight" }}
+								spacer={{ default: "spacerNone", md: "spacerMd" }}
+							>
+								<ToolbarGroup
+									variant="icon-button-group"
+									visibility={{ default: "hidden", lg: "visible" }}
+								>
+									<ToolbarItem>
+										<Button
+											aria-label="Settings"
+											onClick={() => setSettingsOpen(true)}
+											variant={"plain"}
+											icon={<CogIcon />}
+											ouiaId={"setting-button"}
+										/>
+									</ToolbarItem>
+									<ToolbarItem>
+										<Button component="a" href="https://github.com/sigstore/rekor-search-ui" icon={<GithubIcon />}
+														target="_blank"
+														variant={"plain"}
+														ouiaId={"github-link"}
+														aria-label={"GitHub Link"}
+														rel="noopener noreferrer" />
+									</ToolbarItem>
+								</ToolbarGroup>
+							</ToolbarGroup>
+						</ToolbarContent>
+					</Toolbar>
+				</MastheadContent>
+			</Masthead>
+		}>
 			<Head>
 				<title>Rekor Search</title>
 				<meta
@@ -34,97 +89,21 @@ const Home: NextPage = () => {
 				/>
 			</Head>
 
-				<ReBox
-					// sx={{
-					// 	display: "flex",
-					// 	justifyContent: "space-between",
-					// 	alignItems: "center",
-					// 	paddingX: 4,
-					// 	paddingY: 2,
-					// 	background: "white",
-					// 	borderBottom: "1px solid #E3E0E6",
-					// }}
-				>
-					<ReBox
-						// sx={{ height: 41, width: 198, position: "relative" }}
-					>
-						<Link
-							href="https://sigstore.dev"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<Image
-								src="/sigstore_rekor-horizontal-color.svg"
-								alt="Rekor Logo"
-								fill
-							/>
-						</Link>
-					</ReBox>
+			<Settings
+				open={settingsOpen}
+				onClose={() => setSettingsOpen(false)}
+			/>
 
-					<Typography variant="h4">Rekor Search</Typography>
-
-					<ReBox
-						// sx={{
-						// 	width: 198,
-						// 	display: "flex",
-						// 	justifyContent: "flex-end",
-						// 	alignItems: "center",
-						// }}
-					>
-						<IconButton
-							sx={{ mr: 2 }}
-							aria-label="settings"
-							color="inherit"
-							size="small"
-							onClick={() => setSettingsOpen(true)}
-						>
-							<SettingsIcon />
-						</IconButton>
-						<Link
-							href="https://github.com/sigstore/rekor-search-ui"
-							target="_blank"
-							rel="noopener noreferrer"
-							sx={{ lineHeight: 0 }}
-						>
-							<Image
-								src="/github.svg"
-								alt="GitHub"
-								color="white"
-								width={24}
-								height={24}
-							/>
-						</Link>
-					</ReBox>
-				</ReBox>
-
-				<Settings
-					open={settingsOpen}
-					onClose={() => setSettingsOpen(false)}
-				/>
-
-				<Container
-					sx={{
-						mt: 4,
-						display: "flex",
-						flexDirection: "column",
-						gap: 3,
-					}}
-				>
-					<Explorer />
-
-					<ReBox
-						// component="footer"
-						// sx={{
-						// 	display: "flex",
-						// 	flexDirection: "column",
-						// 	alignItems: "center",
-						// 	mb: 3,
-						// 	pt: 2,
-						// }}
-					>
-						<></>
-					</ReBox>
-				</Container>
+			<Container
+				sx={{
+					mt: 4,
+					display: "flex",
+					flexDirection: "column",
+					gap: 3
+				}}
+			>
+				<Explorer />
+			</Container>
 		</Page>
 	);
 };
