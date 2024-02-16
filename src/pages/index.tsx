@@ -1,13 +1,15 @@
-import { Container } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import {
 	Button,
+	Flex,
+	FlexItem,
 	Masthead,
 	MastheadContent,
 	MastheadMain,
 	Page,
+	PageSection,
 	Toolbar,
 	ToolbarContent,
 	ToolbarGroup,
@@ -89,33 +91,30 @@ const Home: NextPage = () => {
 				</Masthead>
 			}
 		>
-			<Head>
-				<title>Rekor Search</title>
-				<meta
-					name="description"
-					content="Search the Rekor public transparency log"
-				/>
-				<link
-					rel="icon"
-					href="/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg"
-				/>
-			</Head>
+			<PageSection>
+				<Head>
+					<title>Rekor Search</title>
+					<meta
+						name="description"
+						content="Search the Rekor public transparency log"
+					/>
+					<link
+						rel="icon"
+						href="/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg"
+					/>
+				</Head>
 
-			<Settings
-				open={settingsOpen}
-				onClose={() => setSettingsOpen(false)}
-			/>
+				<Settings
+					open={settingsOpen}
+					onClose={() => setSettingsOpen(false)}
+				/>
 
-			<Container
-				sx={{
-					mt: 4,
-					display: "flex",
-					flexDirection: "column",
-					gap: 3,
-				}}
-			>
-				<Explorer />
-			</Container>
+				<Flex justifyContent={{ default: "justifyContentCenter" }}>
+					<FlexItem style={{ minWidth: "70vw" }}>
+						<Explorer />
+					</FlexItem>
+				</Flex>
+			</PageSection>
 		</Page>
 	);
 };

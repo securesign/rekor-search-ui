@@ -17,6 +17,7 @@ import {
 } from "../api/rekor_api";
 import { Entry } from "./Entry";
 import { FormInputs, SearchForm } from "./SearchForm";
+import { Card, CardBody } from "@patternfly/react-core";
 
 function isApiError(error: unknown): error is ApiError {
 	return !!error && typeof error === "object" && Object.hasOwn(error, "body");
@@ -180,20 +181,22 @@ export function Explorer() {
 	}, [formInputs]);
 
 	return (
-		<Box>
-			<SearchForm
-				defaultValues={formInputs}
-				isLoading={loading}
-				onSubmit={setQueryParams}
-			/>
+		<Card>
+			<CardBody>
+				<SearchForm
+					defaultValues={formInputs}
+					isLoading={loading}
+					onSubmit={setQueryParams}
+				/>
 
-			{error ? (
-				<Error error={error} />
-			) : loading ? (
-				<LoadingIndicator />
-			) : (
-				<RekorList rekorEntries={data} />
-			)}
-		</Box>
+				{error ? (
+					<Error error={error} />
+				) : loading ? (
+					<LoadingIndicator />
+				) : (
+					<RekorList rekorEntries={data} />
+				)}
+			</CardBody>
+		</Card>
 	);
 }
