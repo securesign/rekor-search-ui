@@ -110,7 +110,7 @@ const Home: NextPage = () => {
 				/>
 
 				<Flex justifyContent={{ default: "justifyContentCenter" }}>
-					<FlexItem style={{ minWidth: "70vw" }}>
+					<FlexItem style={{ width: "70vw" }}>
 						<Explorer />
 					</FlexItem>
 				</Flex>
