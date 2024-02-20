@@ -92,7 +92,7 @@ export function EntryCard({
 
 export function Entry({ entry }: { entry: LogEntry }) {
 	const [uuid, obj] = Object.entries(entry)[0];
-	const [expanded, setExpanded] = useState(["body-content"]);
+	const [expanded, setExpanded] = useState([""]);
 
 	const toggle = (id: string) => {
 		const index = expanded.indexOf(id);
