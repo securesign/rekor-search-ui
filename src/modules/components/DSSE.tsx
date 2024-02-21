@@ -26,7 +26,7 @@ export function DSSEViewer({ dsse }: { dsse: DSSEV001Schema }) {
 		<Panel>
 			<Text
 				component="h5"
-				style={{ paddingTop: 1 }}
+				style={{ paddingTop: "1em" }}
 			>
 				<Link
 					href={`/?hash=${dsse.payloadHash?.algorithm}:${dsse.payloadHash?.value}`}
@@ -45,7 +45,7 @@ export function DSSEViewer({ dsse }: { dsse: DSSEV001Schema }) {
 
 			<Text
 				component="h5"
-				style={{ paddingTop: 1 }}
+				style={{ paddingTop: "1em" }}
 			>
 				Signature
 			</Text>
@@ -57,7 +57,7 @@ export function DSSEViewer({ dsse }: { dsse: DSSEV001Schema }) {
 			</SyntaxHighlighter>
 			<Text
 				component="h5"
-				style={{ paddingTop: 1 }}
+				style={{ paddingTop: "1em" }}
 			>
 				{publicKey.title}
 			</Text>

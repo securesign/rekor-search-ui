@@ -21,6 +21,7 @@ import { Settings } from "../modules/components/Settings";
 import { CogIcon, GithubIcon } from "@patternfly/react-icons";
 import Link from "next/link";
 import Image from "next/image";
+import NOSSRWrapper from "../modules/utils/noSSR";
 
 const Home: NextPage = () => {
 	const [settingsOpen, setSettingsOpen] = useState(false);
@@ -35,12 +36,10 @@ const Home: NextPage = () => {
 							className={"pf-v5-c-masthead_brand"}
 						>
 							<Image
-								className={"pf-v5-c-brand"}
 								src={"/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg"}
 								alt={"Red Hat Trusted Artifact Signer logo"}
 								priority={true}
-								style={{ height: 48 }}
-								width={200}
+								width={127}
 								height={48}
 							/>
 						</Link>
@@ -111,7 +110,9 @@ const Home: NextPage = () => {
 
 				<Flex justifyContent={{ default: "justifyContentCenter" }}>
 					<FlexItem style={{ width: "70vw" }}>
-						<Explorer />
+						<NOSSRWrapper>
+							<Explorer />
+						</NOSSRWrapper>
 					</FlexItem>
 				</Flex>
 			</PageSection>

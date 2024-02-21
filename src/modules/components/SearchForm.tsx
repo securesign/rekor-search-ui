@@ -1,7 +1,5 @@
 import {
 	Button,
-	Card,
-	CardBody,
 	Form,
 	FormHelperText,
 	FormSelect,
@@ -149,87 +147,82 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 	);
 
 	return (
-		<Card>
-			<CardBody>
-				<Form onSubmit={handleSubmit(onSubmit)}>
-					<Grid hasGutter={true}>
-						<GridItem sm={4}>
-							<Controller
-								name="attribute"
-								control={control}
-								render={({ field }) => (
-									<FormSelect
-										id="rekor-search-type"
-										{...field}
-										label="Attribute"
-									>
-										{ATTRIBUTES.map(attribute => (
-											<FormSelectOption
-												label={inputConfigByAttribute[attribute].name}
-												key={attribute}
-												value={attribute}
-											/>
-										))}
-									</FormSelect>
-								)}
-							/>
-						</GridItem>
-						<GridItem
-							sm={8}
-							md={6}
-						>
-							<Controller
-								name="value"
-								control={control}
-								rules={rules}
-								render={({ field, fieldState }) => (
-									<>
-										<TextInput
-											aria-label={`${inputConfigByAttribute[watchAttribute].name} input field`}
-											{...field}
-											label={inputConfigByAttribute[watchAttribute].name}
-											placeholder={inputConfigByAttribute[watchAttribute].name}
-											type={"email"}
-											validated={fieldState.invalid ? "error" : "default"}
-										/>
-										{fieldState.invalid && (
-											<FormHelperText>
-												<HelperText>
-													<HelperTextItem
-														icon={<ExclamationCircleIcon />}
-														variant={fieldState.invalid ? "error" : "success"}
-													>
-														{fieldState.invalid
-															? fieldState.error?.message
-															: inputConfigByAttribute[watchAttribute]
-																	.helperText}
-													</HelperTextItem>
-												</HelperText>
-											</FormHelperText>
-										)}
-									</>
-								)}
-							/>
-						</GridItem>
-						<GridItem
-							sm={12}
-							md={2}
-						>
-							<Button
-								variant="primary"
-								id="search-form-button"
-								isBlock={true}
-								isLoading={isLoading}
-								type="submit"
-								spinnerAriaLabel={"Loading"}
-								spinnerAriaLabelledBy={"search-form-button"}
+		<Form onSubmit={handleSubmit(onSubmit)}>
+			<Grid hasGutter={true}>
+				<GridItem sm={4}>
+					<Controller
+						name="attribute"
+						control={control}
+						render={({ field }) => (
+							<FormSelect
+								id="rekor-search-type"
+								{...field}
+								label="Attribute"
 							>
-								Search
-							</Button>
-						</GridItem>
-					</Grid>
-				</Form>
-			</CardBody>
-		</Card>
+								{ATTRIBUTES.map(attribute => (
+									<FormSelectOption
+										label={inputConfigByAttribute[attribute].name}
+										key={attribute}
+										value={attribute}
+									/>
+								))}
+							</FormSelect>
+						)}
+					/>
+				</GridItem>
+				<GridItem
+					sm={8}
+					md={6}
+				>
+					<Controller
+						name="value"
+						control={control}
+						rules={rules}
+						render={({ field, fieldState }) => (
+							<>
+								<TextInput
+									aria-label={`${inputConfigByAttribute[watchAttribute].name} input field`}
+									{...field}
+									label={inputConfigByAttribute[watchAttribute].name}
+									placeholder={inputConfigByAttribute[watchAttribute].name}
+									type={"email"}
+									validated={fieldState.invalid ? "error" : "default"}
+								/>
+								{fieldState.invalid && (
+									<FormHelperText>
+										<HelperText>
+											<HelperTextItem
+												icon={<ExclamationCircleIcon />}
+												variant={fieldState.invalid ? "error" : "success"}
+											>
+												{fieldState.invalid
+													? fieldState.error?.message
+													: inputConfigByAttribute[watchAttribute].helperText}
+											</HelperTextItem>
+										</HelperText>
+									</FormHelperText>
+								)}
+							</>
+						)}
+					/>
+				</GridItem>
+				<GridItem
+					sm={12}
+					md={2}
+				>
+					<Button
+						variant="primary"
+						id="search-form-button"
+						isBlock={true}
+						isLoading={isLoading}
+						type="submit"
+						spinnerAriaLabel={"Loading"}
+						spinnerAriaLabelledBy={"search-form-button"}
+					>
+						Search
+					</Button>
+				</GridItem>
+			</Grid>
+		</Form>
 	);
 }

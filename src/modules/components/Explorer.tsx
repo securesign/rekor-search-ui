@@ -44,7 +44,7 @@ function Error({ error }: { error: unknown }) {
 
 	return (
 		<Alert
-			style={{ marginTop: 3 }}
+			style={{ margin: "1em auto" }}
 			title={title}
 			variant={"danger"}
 		>
@@ -61,7 +61,6 @@ function RekorList({ rekorEntries }: { rekorEntries?: RekorEntries }) {
 	if (rekorEntries.entries.length === 0) {
 		return (
 			<Alert
-				style={{ marginTop: 3 }}
 				title={"No matching entries found"}
 				variant={"info"}
 			/>
@@ -69,11 +68,8 @@ function RekorList({ rekorEntries }: { rekorEntries?: RekorEntries }) {
 	}
 
 	return (
-		<div style={{ marginTop: "1em" }}>
-			<Text
-				className={"pf-v5-u-my-md"}
-				component={TextVariants.p}
-			>
+		<div style={{ margin: "2em auto" }}>
+			<Text component={TextVariants.p}>
 				Showing {rekorEntries.entries.length} of {rekorEntries?.totalCount}
 			</Text>
 
@@ -92,7 +88,7 @@ function LoadingIndicator() {
 		<Flex
 			alignItems={{ default: "alignItemsCenter" }}
 			direction={{ default: "column" }}
-			style={{ marginTop: 4 }}
+			style={{ margin: "1em auto" }}
 		>
 			<Spinner />
 		</Flex>
