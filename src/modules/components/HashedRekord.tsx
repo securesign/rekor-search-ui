@@ -4,7 +4,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { RekorSchema } from "rekor";
 import { decodex509 } from "../x509/decode";
-import { Panel, Text } from "@patternfly/react-core";
+import { Panel, Text, TextVariants } from "@patternfly/react-core";
 
 export function HashedRekordViewer({
 	hashedRekord,
@@ -28,9 +28,9 @@ export function HashedRekordViewer({
 	}
 
 	return (
-		<Panel style={{ paddingTop: "1em" }}>
+		<Panel style={{ marginTop: "1.25em" }}>
 			<Text
-				component="h5"
+				component={TextVariants.h5}
 				style={{ margin: "1em auto" }}
 			>
 				<Link
@@ -48,7 +48,7 @@ export function HashedRekordViewer({
 			</SyntaxHighlighter>
 
 			<Text
-				component="h5"
+				component={TextVariants.h5}
 				style={{ margin: "1em auto" }}
 			>
 				Signature
@@ -61,7 +61,7 @@ export function HashedRekordViewer({
 			</SyntaxHighlighter>
 
 			<Text
-				component="h5"
+				component={TextVariants.h5}
 				style={{ margin: "1em auto" }}
 			>
 				{publicKey.title}

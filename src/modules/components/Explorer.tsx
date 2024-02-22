@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { ApiError, RekorError } from "rekor";
 import {
 	Attribute,
@@ -55,7 +55,7 @@ function Error({ error }: { error: unknown }) {
 
 function RekorList({ rekorEntries }: { rekorEntries?: RekorEntries }) {
 	if (!rekorEntries) {
-		return <></>;
+		return <Fragment></Fragment>;
 	}
 
 	if (rekorEntries.entries.length === 0) {
@@ -173,7 +173,7 @@ export function Explorer() {
 	}, [formInputs]);
 
 	return (
-		<>
+		<Fragment>
 			<SearchForm
 				defaultValues={formInputs}
 				isLoading={loading}
@@ -187,6 +187,6 @@ export function Explorer() {
 			) : (
 				<RekorList rekorEntries={data} />
 			)}
-		</>
+		</Fragment>
 	);
 }

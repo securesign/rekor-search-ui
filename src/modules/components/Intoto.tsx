@@ -4,7 +4,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { IntotoV002Schema } from "rekor";
 import { decodex509 } from "../x509/decode";
-import { Panel, Text } from "@patternfly/react-core";
+import { Panel, Text, TextVariants } from "@patternfly/react-core";
 
 export function IntotoViewer({ intoto }: { intoto: IntotoV002Schema }) {
 	const signature = intoto.content.envelope?.signatures[0];
@@ -25,7 +25,7 @@ export function IntotoViewer({ intoto }: { intoto: IntotoV002Schema }) {
 	return (
 		<Panel>
 			<Text
-				component="h5"
+				component={TextVariants.h5}
 				style={{ paddingTop: "1.5em", paddingBottom: "1.5em" }}
 			>
 				<Link
@@ -43,7 +43,7 @@ export function IntotoViewer({ intoto }: { intoto: IntotoV002Schema }) {
 			</SyntaxHighlighter>
 
 			<Text
-				component="h5"
+				component={TextVariants.h5}
 				style={{ paddingTop: "1.5em", paddingBottom: "1.5em" }}
 			>
 				Signature
@@ -55,7 +55,7 @@ export function IntotoViewer({ intoto }: { intoto: IntotoV002Schema }) {
 				{window.atob(signature?.sig || "")}
 			</SyntaxHighlighter>
 			<Text
-				component="h5"
+				component={TextVariants.h5}
 				style={{ paddingTop: "1.5em", paddingBottom: "1.5em" }}
 			>
 				{publicKey.title}

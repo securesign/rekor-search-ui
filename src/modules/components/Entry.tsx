@@ -1,7 +1,7 @@
 import { dump, load } from "js-yaml";
 import Link from "next/link";
 import { Convert } from "pvtsutils";
-import { ReactNode, useState } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { DSSEV001Schema, IntotoV002Schema, LogEntry, RekorSchema } from "rekor";
@@ -140,6 +140,7 @@ export function Entry({ entry }: { entry: LogEntry }) {
 				<Text
 					component={TextVariants.h2}
 					style={{
+						margin: "1.25em auto",
 						overflow: "hidden",
 						textOverflow: "ellipsis",
 					}}
@@ -152,7 +153,7 @@ export function Entry({ entry }: { entry: LogEntry }) {
 						{uuid}
 					</Link>
 				</Text>
-				<Divider style={{ margin: "1em auto" }} />
+				<Divider />
 				<Grid hasGutter={true}>
 					<GridItem sm={3}>
 						<EntryCard
@@ -190,7 +191,7 @@ export function Entry({ entry }: { entry: LogEntry }) {
 						margin: "0.75em auto",
 					}}
 				>
-					<>
+					<Fragment>
 						<Accordion>
 							<>
 								<AccordionItem>
@@ -265,7 +266,7 @@ export function Entry({ entry }: { entry: LogEntry }) {
 								)}
 							</>
 						</Accordion>
-					</>
+					</Fragment>
 				</Panel>
 			</CardBody>
 		</Card>
