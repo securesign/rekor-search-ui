@@ -97,7 +97,7 @@ const Home: NextPage = () => {
 				/>
 				<link
 					rel="icon"
-					href="/logo.png"
+					href="/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg"
 				/>
 			</Head>
 
