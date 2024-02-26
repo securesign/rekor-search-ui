@@ -1,12 +1,5 @@
-import {
-	Alert,
-	AlertTitle,
-	Box,
-	CircularProgress,
-	Typography,
-} from "@mui/material";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { ApiError, RekorError } from "rekor";
 import {
 	Attribute,
@@ -17,6 +10,13 @@ import {
 } from "../api/rekor_api";
 import { Entry } from "./Entry";
 import { FormInputs, SearchForm } from "./SearchForm";
+import {
+	Alert,
+	Flex,
+	Spinner,
+	Text,
+	TextVariants,
+} from "@patternfly/react-core";
 
 function isApiError(error: unknown): error is ApiError {
 	return !!error && typeof error === "object" && Object.hasOwn(error, "body");
@@ -44,11 +44,10 @@ function Error({ error }: { error: unknown }) {
 
 	return (
 		<Alert
-			sx={{ mt: 3 }}
-			severity="error"
-			variant="filled"
+			style={{ margin: "1em auto" }}
+			title={title}
+			variant={"danger"}
 		>
-			<AlertTitle>{title}</AlertTitle>
 			{detail}
 		</Alert>
 	);
@@ -56,26 +55,23 @@ function Error({ error }: { error: unknown }) {
 
 function RekorList({ rekorEntries }: { rekorEntries?: RekorEntries }) {
 	if (!rekorEntries) {
-		return <></>;
+		return <Fragment></Fragment>;
 	}
 
 	if (rekorEntries.entries.length === 0) {
 		return (
 			<Alert
-				sx={{ mt: 3 }}
-				severity="info"
-				variant="filled"
-			>
-				No matching entries found
-			</Alert>
+				title={"No matching entries found"}
+				variant={"info"}
+			/>
 		);
 	}
 
 	return (
-		<>
-			<Typography sx={{ my: 2 }}>
+		<div style={{ margin: "2em auto" }}>
+			<Text component={TextVariants.p}>
 				Showing {rekorEntries.entries.length} of {rekorEntries?.totalCount}
-			</Typography>
+			</Text>
 
 			{rekorEntries.entries.map(entry => (
 				<Entry
@@ -83,22 +79,19 @@ function RekorList({ rekorEntries }: { rekorEntries?: RekorEntries }) {
 					entry={entry}
 				/>
 			))}
-		</>
+		</div>
 	);
 }
 
 function LoadingIndicator() {
 	return (
-		<Box
-			sx={{
-				display: "flex",
-				alignItems: "center",
-				flexDirection: "column",
-				marginTop: 4,
-			}}
+		<Flex
+			alignItems={{ default: "alignItemsCenter" }}
+			direction={{ default: "column" }}
+			style={{ margin: "1em auto" }}
 		>
-			<CircularProgress />
-		</Box>
+			<Spinner />
+		</Flex>
 	);
 }
 
@@ -180,7 +173,7 @@ export function Explorer() {
 	}, [formInputs]);
 
 	return (
-		<Box>
+		<Fragment>
 			<SearchForm
 				defaultValues={formInputs}
 				isLoading={loading}
@@ -194,6 +187,6 @@ export function Explorer() {
 			) : (
 				<RekorList rekorEntries={data} />
 			)}
-		</Box>
+		</Fragment>
 	);
 }

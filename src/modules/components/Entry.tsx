@@ -1,21 +1,7 @@
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-	Accordion,
-	AccordionDetails as MuiAccordionDetails,
-	AccordionSummary,
-	Box,
-	Divider,
-	DividerProps,
-	Grid,
-	Link,
-	Paper,
-	styled,
-	Typography,
-} from "@mui/material";
 import { dump, load } from "js-yaml";
-import NextLink from "next/link";
+import Link from "next/link";
 import { Convert } from "pvtsutils";
-import { ReactNode } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { DSSEV001Schema, IntotoV002Schema, LogEntry, RekorSchema } from "rekor";
@@ -23,6 +9,22 @@ import { toRelativeDateString } from "../utils/date";
 import { DSSEViewer } from "./DSSE";
 import { HashedRekordViewer } from "./HashedRekord";
 import { IntotoViewer } from "./Intoto";
+import {
+	Accordion,
+	AccordionItem,
+	AccordionContent,
+	AccordionToggle,
+	Card,
+	CardBody,
+	Divider,
+	Flex,
+	FlexItem,
+	Grid,
+	GridItem,
+	Panel,
+	Text,
+	TextVariants,
+} from "@patternfly/react-core";
 
 const DUMP_OPTIONS: jsyaml.DumpOptions = {
 	replacer: (key, value) => {
@@ -36,10 +38,6 @@ const DUMP_OPTIONS: jsyaml.DumpOptions = {
 		return value;
 	},
 };
-
-const AccordionDetails = styled(MuiAccordionDetails)({
-	padding: 0,
-});
 
 /**
  * Return a parsed JSON object of the provided content.
@@ -56,40 +54,28 @@ function tryJSONParse(content?: string): unknown {
 	}
 }
 
-export function Card({
+export function EntryCard({
 	title,
 	content,
-	dividerSx = {},
+	dividerProps = {},
 }: {
 	title: ReactNode;
 	content: ReactNode;
-	dividerSx?: DividerProps["sx"];
+	dividerProps?: { display?: string };
 }) {
 	return (
-		<div
-			style={{
-				display: "flex",
-			}}
-		>
+		<Flex style={{ padding: "1em" }}>
 			<Divider
-				orientation="vertical"
-				flexItem
-				sx={{
-					mx: 1,
-					...dividerSx,
+				orientation={{
+					default: "vertical",
 				}}
+				style={{ margin: "inherit 1em", ...dividerProps }}
 			/>
-			<Box>
-				<Typography
-					variant="button"
-					component="h3"
-				>
-					{title}
-				</Typography>
-				<Typography
-					variant="body2"
-					component="p"
-					sx={{
+			<FlexItem>
+				<Text component={TextVariants.h3}>{title}</Text>
+				<Text
+					component={TextVariants.p}
+					style={{
 						overflow: "hidden",
 						textOverflow: "ellipsis",
 						display: "flex",
@@ -98,14 +84,27 @@ export function Card({
 					}}
 				>
 					{content}
-				</Typography>
-			</Box>
-		</div>
+				</Text>
+			</FlexItem>
+		</Flex>
 	);
 }
 
 export function Entry({ entry }: { entry: LogEntry }) {
 	const [uuid, obj] = Object.entries(entry)[0];
+	const [expanded, setExpanded] = useState([""]);
+
+	const toggle = (id: string) => {
+		const index = expanded.indexOf(id);
+		const newExpanded: string[] =
+			index >= 0
+				? [
+						...expanded.slice(0, index),
+						...expanded.slice(index + 1, expanded.length),
+				  ]
+				: [...expanded, id];
+		setExpanded(newExpanded);
+	};
 
 	const body = JSON.parse(window.atob(obj.body)) as {
 		kind: string;
@@ -136,155 +135,140 @@ export function Entry({ entry }: { entry: LogEntry }) {
 	}
 
 	return (
-		<Paper sx={{ mb: 2, p: 1 }}>
-			<Typography
-				variant="h5"
-				component="h2"
-				sx={{
-					overflow: "hidden",
-					textOverflow: "ellipsis",
-				}}
-			>
-				Entry UUID:{" "}
-				<Link
-					component={NextLink}
-					href={`/?uuid=${uuid}`}
-					passHref
+		<Card style={{ margin: "1.5em auto 2em" }}>
+			<CardBody>
+				<Text
+					component={TextVariants.h2}
+					style={{
+						margin: "1.25em auto",
+						overflow: "hidden",
+						textOverflow: "ellipsis",
+					}}
 				>
-					{uuid}
-				</Link>
-			</Typography>
-			<Divider
-				flexItem
-				sx={{ my: 1 }}
-			/>
-			<Grid
-				container
-				sx={{ mb: 1 }}
-				rowSpacing={1}
-			>
-				<Grid
-					item
-					xs={6}
-					sm={3}
-				>
-					<Card
-						title="Type"
-						content={body.kind}
-						dividerSx={{
-							display: "none",
-						}}
-					/>
-				</Grid>
-				<Grid
-					item
-					xs={6}
-					sm={3}
-				>
-					<Card
-						title="Log Index"
-						content={
-							<Link
-								component={NextLink}
-								href={`/?logIndex=${obj.logIndex}`}
-								passHref
-							>
-								{obj.logIndex}
-							</Link>
-						}
-					/>
-				</Grid>
-				<Grid
-					item
-					xs={12}
-					sm={6}
-				>
-					<Card
-						title="Integrated time"
-						content={toRelativeDateString(new Date(obj.integratedTime * 1000))}
-						dividerSx={{
-							display: {
-								xs: "none",
-								sm: "block",
-							},
-						}}
-					/>
-				</Grid>
-			</Grid>
-			<Divider
-				flexItem
-				sx={{ my: 1 }}
-			/>
-			{parsed}
-			<Box
-				sx={{
-					mt: 1,
-					"& .MuiAccordion-root:not(:last-of-type)": {
-						borderBottom: "none",
-					},
-				}}
-			>
-				<>
-					<Accordion
-						disableGutters
-						defaultExpanded={!parsed}
+					Entry UUID:{" "}
+					<Link
+						href={`/?uuid=${uuid}`}
+						passHref
 					>
-						<AccordionSummary
-							expandIcon={<ExpandMoreIcon />}
-							aria-controls="body-content"
-							id="body-header"
-						>
-							<Typography>Raw Body</Typography>
-						</AccordionSummary>
-						<AccordionDetails>
-							<SyntaxHighlighter
-								language="yaml"
-								style={atomDark}
-							>
-								{dump(body, DUMP_OPTIONS)}
-							</SyntaxHighlighter>
-						</AccordionDetails>
-					</Accordion>
-					{attestation && (
-						<Accordion disableGutters>
-							<AccordionSummary
-								expandIcon={<ExpandMoreIcon />}
-								aria-controls="attestation-content"
-								id="attestation-header"
-							>
-								<Typography>Attestation</Typography>
-							</AccordionSummary>
-							<AccordionDetails>
-								<SyntaxHighlighter
-									language="yaml"
-									style={atomDark}
+						{uuid}
+					</Link>
+				</Text>
+				<Divider />
+				<Grid hasGutter={true}>
+					<GridItem sm={3}>
+						<EntryCard
+							title="Type"
+							content={body.kind}
+							dividerProps={{ display: "none" }}
+						/>
+					</GridItem>
+					<GridItem sm={3}>
+						<EntryCard
+							title="Log Index"
+							content={
+								<Link
+									href={`/?logIndex=${obj.logIndex}`}
+									passHref
 								>
-									{dump(attestation)}
-								</SyntaxHighlighter>
-							</AccordionDetails>
+									{obj.logIndex}
+								</Link>
+							}
+						/>
+					</GridItem>
+					<GridItem sm={6}>
+						<EntryCard
+							title="Integrated time"
+							content={toRelativeDateString(
+								new Date(obj.integratedTime * 1000),
+							)}
+						/>
+					</GridItem>
+				</Grid>
+				<Divider />
+				{parsed}
+				<Panel
+					style={{
+						margin: "0.75em auto",
+					}}
+				>
+					<Fragment>
+						<Accordion>
+							<>
+								<AccordionItem>
+									<AccordionToggle
+										id={"body-header"}
+										aria-controls="body-content"
+										isExpanded={!parsed}
+										onClick={() => {
+											toggle("body-content");
+										}}
+									>
+										<Text>Raw Body</Text>
+									</AccordionToggle>
+									<AccordionContent
+										isHidden={!expanded.includes("body-content")}
+									>
+										<SyntaxHighlighter
+											language="yaml"
+											style={atomDark}
+										>
+											{dump(body, DUMP_OPTIONS)}
+										</SyntaxHighlighter>
+									</AccordionContent>
+								</AccordionItem>
+								{attestation && (
+									<AccordionItem>
+										<AccordionToggle
+											aria-controls="attestation-content"
+											id="attestation-header"
+											isExpanded={!parsed}
+											onClick={() => {
+												toggle("attestation-content");
+											}}
+										>
+											<Text>Attestation</Text>
+										</AccordionToggle>
+										<AccordionContent
+											isHidden={!expanded.includes("attestation-content")}
+										>
+											<SyntaxHighlighter
+												language="yaml"
+												style={atomDark}
+											>
+												{dump(attestation)}
+											</SyntaxHighlighter>
+										</AccordionContent>
+									</AccordionItem>
+								)}
+								{obj.verification && (
+									<AccordionItem>
+										<AccordionToggle
+											aria-controls="verification-content"
+											id={"verification-header"}
+											isExpanded={!parsed}
+											onClick={() => {
+												toggle("verification-content");
+											}}
+										>
+											<Text>Verification</Text>
+										</AccordionToggle>
+										<AccordionContent
+											isHidden={!expanded.includes("verification-content")}
+										>
+											<SyntaxHighlighter
+												language="yaml"
+												style={atomDark}
+											>
+												{dump(obj.verification)}
+											</SyntaxHighlighter>
+										</AccordionContent>
+									</AccordionItem>
+								)}
+							</>
 						</Accordion>
-					)}
-					{obj.verification && (
-						<Accordion disableGutters>
-							<AccordionSummary
-								expandIcon={<ExpandMoreIcon />}
-								aria-controls="verification-content"
-								id="verification-header"
-							>
-								<Typography>Verification</Typography>
-							</AccordionSummary>
-							<AccordionDetails>
-								<SyntaxHighlighter
-									language="yaml"
-									style={atomDark}
-								>
-									{dump(obj.verification)}
-								</SyntaxHighlighter>
-							</AccordionDetails>
-						</Accordion>
-					)}
-				</>
-			</Box>
-		</Paper>
+					</Fragment>
+				</Panel>
+			</CardBody>
+		</Card>
 	);
 }

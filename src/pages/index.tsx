@@ -1,13 +1,15 @@
-import { Container } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import {
 	Button,
+	Flex,
+	FlexItem,
 	Masthead,
 	MastheadContent,
 	MastheadMain,
 	Page,
+	PageSection,
 	Toolbar,
 	ToolbarContent,
 	ToolbarGroup,
@@ -19,6 +21,7 @@ import { Settings } from "../modules/components/Settings";
 import { CogIcon, GithubIcon } from "@patternfly/react-icons";
 import Link from "next/link";
 import Image from "next/image";
+import NOSSRWrapper from "../modules/utils/noSSR";
 
 const Home: NextPage = () => {
 	const [settingsOpen, setSettingsOpen] = useState(false);
@@ -33,12 +36,10 @@ const Home: NextPage = () => {
 							className={"pf-v5-c-masthead_brand"}
 						>
 							<Image
-								className={"pf-v5-c-brand"}
 								src={"/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg"}
 								alt={"Red Hat Trusted Artifact Signer logo"}
 								priority={true}
-								style={{ height: 48 }}
-								width={200}
+								width={127}
 								height={48}
 							/>
 						</Link>
@@ -89,33 +90,32 @@ const Home: NextPage = () => {
 				</Masthead>
 			}
 		>
-			<Head>
-				<title>Rekor Search</title>
-				<meta
-					name="description"
-					content="Search the Rekor public transparency log"
-				/>
-				<link
-					rel="icon"
-					href="/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg"
-				/>
-			</Head>
+			<PageSection>
+				<Head>
+					<title>Rekor Search</title>
+					<meta
+						name="description"
+						content="Search the Rekor public transparency log"
+					/>
+					<link
+						rel="icon"
+						href="/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg"
+					/>
+				</Head>
 
-			<Settings
-				open={settingsOpen}
-				onClose={() => setSettingsOpen(false)}
-			/>
+				<Settings
+					open={settingsOpen}
+					onClose={() => setSettingsOpen(false)}
+				/>
 
-			<Container
-				sx={{
-					mt: 4,
-					display: "flex",
-					flexDirection: "column",
-					gap: 3,
-				}}
-			>
-				<Explorer />
-			</Container>
+				<Flex justifyContent={{ default: "justifyContentCenter" }}>
+					<FlexItem style={{ width: "70vw" }}>
+						<NOSSRWrapper>
+							<Explorer />
+						</NOSSRWrapper>
+					</FlexItem>
+				</Flex>
+			</PageSection>
 		</Page>
 	);
 };

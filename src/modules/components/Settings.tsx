@@ -1,13 +1,13 @@
-import {
-	Box,
-	Button,
-	Divider,
-	Drawer,
-	TextField,
-	Typography,
-} from "@mui/material";
-import { ChangeEventHandler, useCallback, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import { useRekorBaseUrl } from "../api/context";
+import {
+	Modal,
+	ModalVariant,
+	Button,
+	TextInput,
+	Form,
+	FormGroup,
+} from "@patternfly/react-core";
 
 export function Settings({
 	open,
@@ -19,13 +19,11 @@ export function Settings({
 	const [baseUrl, setBaseUrl] = useRekorBaseUrl();
 	const [localBaseUrl, setLocalBaseUrl] = useState(baseUrl);
 
-	const handleChangeBaseUrl: ChangeEventHandler<
-		HTMLTextAreaElement | HTMLInputElement
-	> = useCallback(e => {
-		if (e.target.value.length === 0) {
+	const handleChangeBaseUrl = useCallback((e: FormEvent<HTMLInputElement>) => {
+		if (e.currentTarget.value.length === 0) {
 			setLocalBaseUrl(undefined);
 		} else {
-			setLocalBaseUrl(e.target.value);
+			setLocalBaseUrl(e.currentTarget.value);
 		}
 	}, []);
 
@@ -42,38 +40,45 @@ export function Settings({
 	}, [localBaseUrl, setBaseUrl, onClose]);
 
 	return (
-		<Drawer
-			anchor={"right"}
-			open={open}
+		<Modal
+			variant={ModalVariant.small}
+			title="Settings"
+			isOpen={open}
 			onClose={onClose}
+			actions={[
+				<Button
+					key="confirm"
+					variant="primary"
+					onClick={onSave}
+				>
+					Confirm
+				</Button>,
+				<Button
+					key="cancel"
+					variant="link"
+					onClick={onClose}
+				>
+					Cancel
+				</Button>,
+			]}
 		>
-			<Box sx={{ width: 320 }}>
-				<Box sx={{ p: 2 }}>
-					<Typography>Settings</Typography>
-				</Box>
-				<Divider />
-				<Box sx={{ p: 2 }}>
-					<Typography variant="overline">Override rekor endpoint</Typography>
-					<TextField
+			<Form id="settings-form">
+				<FormGroup
+					label="Override Rekor Endpoint"
+					isRequired
+					fieldId="rekor-endpoint-override"
+				>
+					<TextInput
 						value={localBaseUrl ?? ""}
+						type="text"
+						onChange={handleChangeBaseUrl}
 						placeholder={
 							baseUrl === undefined ? "https://rekor.sigstore.dev" : baseUrl
 						}
-						onChange={handleChangeBaseUrl}
-						fullWidth
+						aria-label="override rekor endpoint"
 					/>
-				</Box>
-				<Divider sx={{ mt: 2 }} />
-				<Box sx={{ p: 2, display: "flex", gap: 2 }}>
-					<Button
-						onClick={onSave}
-						variant="contained"
-					>
-						Save
-					</Button>
-					<Button onClick={onClose}>Cancel</Button>
-				</Box>
-			</Box>
-		</Drawer>
+				</FormGroup>
+			</Form>
+		</Modal>
 	);
 }
