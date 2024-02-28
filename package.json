@@ -22,7 +22,7 @@
 		"react": "^18.0.0-rc.1",
 		"react-dom": "^18.0.0-rc.1",
 		"react-error-boundary": "^3.1.4",
-		"react-hook-form": "^7.31.0",
+		"react-hook-form": "^7.50.1",
 		"react-syntax-highlighter": "^15.5.0",
 		"rekor": "^0.2.0",
 		"sharp": "^0.33.2"
