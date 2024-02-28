@@ -14,7 +14,7 @@
 	"dependencies": {
 		"@patternfly/patternfly": "^5.2.0",
 		"@patternfly/react-core": "^5.2.0",
-		"@peculiar/x509": "1.8.4",
+		"@peculiar/x509": "1.9.7",
 		"js-yaml": "^4.1.0",
 		"moment": "^2.29.3",
 		"next": "^13.5.4",
