@@ -7,16 +7,16 @@ import {
 	FormHelperText,
 	FormSelect,
 	FormSelectOption,
-	Grid,
-	GridItem,
 	HelperText,
 	HelperTextItem,
+	Popover,
 	TextInput,
 } from "@patternfly/react-core";
 import { ReactNode, useEffect } from "react";
 import { Controller, RegisterOptions, useForm } from "react-hook-form";
 import { Attribute, ATTRIBUTES } from "../api/rekor_api";
-import { ExclamationCircleIcon } from "@patternfly/react-icons";
+import { ExclamationCircleIcon, HelpIcon } from "@patternfly/react-icons";
+import styles from "@patternfly/react-styles/css/components/Form/form";
 
 export interface FormProps {
 	defaultValues?: FormInputs;
@@ -164,6 +164,61 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 								<FormGroup
 									label={"Attribute"}
 									fieldId={"rekor-search-attribute"}
+									labelIcon={
+										<Popover
+											headerContent={
+												<div>
+													The{" "}
+													<a
+														href="https://schema.org/name"
+														target="_blank"
+														rel="noreferrer"
+													>
+														name
+													</a>{" "}
+													of a{" "}
+													<a
+														href="https://schema.org/Person"
+														target="_blank"
+														rel="noreferrer"
+													>
+														Person
+													</a>
+												</div>
+											}
+											bodyContent={
+												<div>
+													Often composed of{" "}
+													<a
+														href="https://schema.org/givenName"
+														target="_blank"
+														rel="noreferrer"
+													>
+														givenName
+													</a>{" "}
+													and{" "}
+													<a
+														href="https://schema.org/familyName"
+														target="_blank"
+														rel="noreferrer"
+													>
+														familyName
+													</a>
+													.
+												</div>
+											}
+										>
+											<button
+												type="button"
+												aria-label="More info for name field"
+												onClick={e => e.preventDefault()}
+												aria-describedby="form-group-label-info"
+												className={styles.formGroupLabelHelp}
+											>
+												<HelpIcon />
+											</button>
+										</Popover>
+									}
 								>
 									<FormSelect
 										id="rekor-search-attribute"
@@ -231,22 +286,17 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 					grow={{ default: "grow" }}
 				>
 					<FlexItem>
-						<FormGroup
-							label={" "}
-							fieldId={"search-form-button"}
+						<Button
+							variant="primary"
+							id="search-form-button"
+							isBlock={true}
+							isLoading={isLoading}
+							type="submit"
+							spinnerAriaLabel={"Loading"}
+							spinnerAriaLabelledBy={"search-form-button"}
 						>
-							<Button
-								variant="primary"
-								id="search-form-button"
-								isBlock={true}
-								isLoading={isLoading}
-								type="submit"
-								spinnerAriaLabel={"Loading"}
-								spinnerAriaLabelledBy={"search-form-button"}
-							>
-								Search
-							</Button>
-						</FormGroup>
+							Search
+						</Button>
 					</FlexItem>
 				</Flex>
 			</Flex>
