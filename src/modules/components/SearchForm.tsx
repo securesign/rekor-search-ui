@@ -1,6 +1,9 @@
 import {
 	Button,
+	Flex,
+	FlexItem,
 	Form,
+	FormGroup,
 	FormHelperText,
 	FormSelect,
 	FormSelectOption,
@@ -148,81 +151,105 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 
 	return (
 		<Form onSubmit={handleSubmit(onSubmit)}>
-			<Grid hasGutter={true}>
-				<GridItem sm={4}>
-					<Controller
-						name="attribute"
-						control={control}
-						render={({ field }) => (
-							<FormSelect
-								id="rekor-search-type"
-								{...field}
-								label="Attribute"
-							>
-								{ATTRIBUTES.map(attribute => (
-									<FormSelectOption
-										label={inputConfigByAttribute[attribute].name}
-										key={attribute}
-										value={attribute}
+			<Flex>
+				<Flex
+					direction={{ default: "column" }}
+					grow={{ default: "grow" }}
+				>
+					<FlexItem>
+						<Controller
+							name="attribute"
+							control={control}
+							render={({ field }) => (
+								<FormGroup
+									label={"Attribute"}
+									fieldId={"rekor-search-attribute"}
+								>
+									<FormSelect
+										id="rekor-search-attribute"
+										{...field}
+										label="Attribute"
+									>
+										{ATTRIBUTES.map(attribute => (
+											<FormSelectOption
+												label={inputConfigByAttribute[attribute].name}
+												key={attribute}
+												value={attribute}
+											/>
+										))}
+									</FormSelect>
+								</FormGroup>
+							)}
+						/>
+					</FlexItem>
+				</Flex>
+				<Flex
+					direction={{ default: "column" }}
+					grow={{ default: "grow" }}
+				>
+					<FlexItem>
+						<Controller
+							name="value"
+							control={control}
+							rules={rules}
+							render={({ field, fieldState }) => (
+								<FormGroup
+									label={"Email"}
+									fieldId={"rekor-search-email"}
+								>
+									<TextInput
+										aria-label={`${inputConfigByAttribute[watchAttribute].name} input field`}
+										{...field}
+										id={"rekor-search-email"}
+										label={inputConfigByAttribute[watchAttribute].name}
+										placeholder={inputConfigByAttribute[watchAttribute].name}
+										type={"email"}
+										validated={fieldState.invalid ? "error" : "default"}
 									/>
-								))}
-							</FormSelect>
-						)}
-					/>
-				</GridItem>
-				<GridItem
-					sm={8}
-					md={6}
+									{fieldState.invalid && (
+										<FormHelperText>
+											<HelperText>
+												<HelperTextItem
+													icon={<ExclamationCircleIcon />}
+													variant={fieldState.invalid ? "error" : "success"}
+												>
+													{fieldState.invalid
+														? fieldState.error?.message
+														: inputConfigByAttribute[watchAttribute].helperText}
+												</HelperTextItem>
+											</HelperText>
+										</FormHelperText>
+									)}
+								</FormGroup>
+							)}
+						/>
+					</FlexItem>
+				</Flex>
+				<Flex
+					direction={{ default: "column" }}
+					alignSelf={{ default: "alignSelfFlexEnd" }}
+					grow={{ default: "grow" }}
 				>
-					<Controller
-						name="value"
-						control={control}
-						rules={rules}
-						render={({ field, fieldState }) => (
-							<>
-								<TextInput
-									aria-label={`${inputConfigByAttribute[watchAttribute].name} input field`}
-									{...field}
-									label={inputConfigByAttribute[watchAttribute].name}
-									placeholder={inputConfigByAttribute[watchAttribute].name}
-									type={"email"}
-									validated={fieldState.invalid ? "error" : "default"}
-								/>
-								{fieldState.invalid && (
-									<FormHelperText>
-										<HelperText>
-											<HelperTextItem
-												icon={<ExclamationCircleIcon />}
-												variant={fieldState.invalid ? "error" : "success"}
-											>
-												{fieldState.invalid
-													? fieldState.error?.message
-													: inputConfigByAttribute[watchAttribute].helperText}
-											</HelperTextItem>
-										</HelperText>
-									</FormHelperText>
-								)}
-							</>
-						)}
-					/>
-				</GridItem>
-				<GridItem
-					sm={12}
-					md={2}
-				>
-					<Button
-						variant="primary"
-						id="search-form-button"
-						isBlock={true}
-						isLoading={isLoading}
-						type="submit"
-						spinnerAriaLabel={"Loading"}
-						spinnerAriaLabelledBy={"search-form-button"}
-					>
-						Search
-					</Button>
-				</GridItem>
-			</Grid>
+					<FlexItem>
+						<FormGroup
+							label={" "}
+							fieldId={"search-form-button"}
+						>
+							<Button
+								variant="primary"
+								id="search-form-button"
+								isBlock={true}
+								isLoading={isLoading}
+								type="submit"
+								spinnerAriaLabel={"Loading"}
+								spinnerAriaLabelledBy={"search-form-button"}
+							>
+								Search
+							</Button>
+						</FormGroup>
+					</FlexItem>
+				</Flex>
+			</Flex>
 		</Form>
 	);
 }
