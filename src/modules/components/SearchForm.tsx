@@ -38,6 +38,7 @@ interface InputConfig {
 	name: string;
 	helperText?: ReactNode;
 	rules: Rules;
+	tooltipText?: ReactNode;
 }
 
 const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
@@ -49,6 +50,7 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 				message: "Entered value does not match the email format: 'S+@S+.S+'",
 			},
 		},
+		tooltipText: <>Search by the signer&apos;s email address.</>,
 	},
 	hash: {
 		name: "Hash",
@@ -59,6 +61,7 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 					"Entered value does not match the hash format: '^(sha256:)?[0-9a-fA-F]{64}$|^(sha1:)?[0-9a-fA-F]{40}$'",
 			},
 		},
+		tooltipText: <>Search by the SHA1 or SHA2 hash value.</>,
 	},
 	commitSha: {
 		name: "Commit SHA",
@@ -85,9 +88,11 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 					"Entered value does not match the commit SHA format: '^[0-9a-fA-F]{40}$'",
 			},
 		},
+		tooltipText: <>Search by the commit hash.</>,
 	},
 	uuid: {
 		name: "Entry UUID",
+		helperText: <>Search by the universally unique identifier value.</>,
 		rules: {
 			pattern: {
 				value: /^[0-9a-fA-F]{64}|[0-9a-fA-F]{80}$/,
@@ -95,9 +100,11 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 					"Entered value does not match the entry UUID format: '^[0-9a-fA-F]{64}|[0-9a-fA-F]{80}$'",
 			},
 		},
+		tooltipText: <>Search by the universally unique identifier value.</>,
 	},
 	logIndex: {
 		name: "Log Index",
+		helperText: <>Search by the log index number.</>,
 		rules: {
 			min: {
 				value: 0,
@@ -108,6 +115,7 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 				message: "Entered value must be of type int64",
 			},
 		},
+		tooltipText: <>Search by the log index number.</>,
 	},
 };
 
@@ -121,47 +129,6 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 				value: "",
 			},
 		});
-	const [attrHelperHeader, setAttrHelperHeader] = useState(
-		<div>
-			The{" "}
-			<a
-				href="https://schema.org/name"
-				target="_blank"
-				rel="noreferrer"
-			>
-				name
-			</a>{" "}
-			of a{" "}
-			<a
-				href="https://schema.org/Person"
-				target="_blank"
-				rel="noreferrer"
-			>
-				Person
-			</a>
-		</div>,
-	);
-	const [attrHelperBody, setAttrHelperBody] = useState(
-		<div>
-			Often composed of{" "}
-			<a
-				href="https://schema.org/givenName"
-				target="_blank"
-				rel="noreferrer"
-			>
-				givenName
-			</a>{" "}
-			and{" "}
-			<a
-				href="https://schema.org/familyName"
-				target="_blank"
-				rel="noreferrer"
-			>
-				familyName
-			</a>
-			.
-		</div>,
-	);
 
 	useEffect(() => {
 		if (defaultValues) {
@@ -195,7 +162,7 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 			<Flex>
 				<Flex
 					direction={{ default: "column" }}
-					grow={{ default: "grow" }}
+					flex={{ default: "flex_3" }}
 				>
 					<FlexItem>
 						<Controller
@@ -207,14 +174,16 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 									fieldId={"rekor-search-attribute"}
 									labelIcon={
 										<Popover
-											headerContent={attrHelperHeader}
-											bodyContent={attrHelperBody}
+											bodyContent={
+												inputConfigByAttribute[watchAttribute].tooltipText
+											}
+											position={"right"}
 										>
 											<button
 												type="button"
 												aria-label="More info for attribute field"
 												onClick={e => e.preventDefault()}
-												aria-describedby="form-group-label-info"
+												aria-describedby="attribute-info"
 												className={styles.formGroupLabelHelp}
 											>
 												<HelpIcon />
@@ -242,7 +211,7 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 				</Flex>
 				<Flex
 					direction={{ default: "column" }}
-					grow={{ default: "grow" }}
+					flex={{ default: "flex_3" }}
 				>
 					<FlexItem>
 						<Controller
@@ -251,16 +220,24 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 							rules={rules}
 							render={({ field, fieldState }) => (
 								<FormGroup
-									label={"Email"}
-									fieldId={"rekor-search-email"}
+									label={inputConfigByAttribute[watchAttribute].name}
+									fieldId={`rekor-search-${inputConfigByAttribute[
+										watchAttribute
+									].name.toLowerCase()}`}
 								>
 									<TextInput
 										aria-label={`${inputConfigByAttribute[watchAttribute].name} input field`}
 										{...field}
-										id={"rekor-search-email"}
+										id={`rekor-search-${inputConfigByAttribute[
+											watchAttribute
+										].name.toLowerCase()}`}
 										label={inputConfigByAttribute[watchAttribute].name}
 										placeholder={inputConfigByAttribute[watchAttribute].name}
-										type={"email"}
+										type={
+											inputConfigByAttribute[watchAttribute].name === "email"
+												? "email"
+												: "text"
+										}
 										validated={fieldState.invalid ? "error" : "default"}
 									/>
 									{fieldState.invalid && (
@@ -285,6 +262,7 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 				<Flex
 					direction={{ default: "column" }}
 					alignSelf={{ default: "alignSelfFlexEnd" }}
+					flex={{ default: "flex_1" }}
 				>
 					<FlexItem>
 						<Button
