@@ -97,7 +97,6 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 	},
 	uuid: {
 		name: "Entry UUID",
-		helperText: <>Search by the universally unique identifier value.</>,
 		placeholder:
 			"24296fb24b8ad77a71b9c1374e207537bafdd75b4f591dcee10f3f697f150d7cc5d0b725eea641e7",
 		rules: {
@@ -111,7 +110,6 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 	},
 	logIndex: {
 		name: "Log Index",
-		helperText: <>Search by the log index number.</>,
 		placeholder: "1234567",
 		rules: {
 			min: {
@@ -229,6 +227,7 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 							render={({ field, fieldState }) => (
 								<FormGroup
 									label={inputConfigByAttribute[watchAttribute].name}
+									labelInfo={inputConfigByAttribute[watchAttribute].helperText}
 									fieldId={`rekor-search-${inputConfigByAttribute[
 										watchAttribute
 									].name.toLowerCase()}`}

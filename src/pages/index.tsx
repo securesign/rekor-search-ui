@@ -32,10 +32,7 @@ const Home: NextPage = () => {
 			header={
 				<Masthead>
 					<MastheadMain>
-						<Link
-							href={"/"}
-							as={"image"}
-						>
+						<Link href={"/"}>
 							<Image
 								src={logo}
 								alt={"Red Hat Trusted Artifact Signer logo"}
