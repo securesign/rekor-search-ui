@@ -37,6 +37,7 @@ type Rules = Omit<
 interface InputConfig {
 	name: string;
 	helperText?: ReactNode;
+	placeholder?: string;
 	rules: Rules;
 	tooltipText?: ReactNode;
 }
@@ -44,6 +45,7 @@ interface InputConfig {
 const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 	email: {
 		name: "Email",
+		placeholder: "jdoe@example.com",
 		rules: {
 			pattern: {
 				value: /\S+@\S+\.\S+/,
@@ -54,6 +56,8 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 	},
 	hash: {
 		name: "Hash",
+		placeholder:
+			"sha256:8ceb4ab8127731473a9ec81140cb6849cf8e970cda31baef099df48ba3264441",
 		rules: {
 			pattern: {
 				value: /^(sha256:)?[0-9a-fA-F]{64}$|^(sha1:)?[0-9a-fA-F]{40}$/,
@@ -81,6 +85,7 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 				entries
 			</>
 		),
+		placeholder: "6d78e27dfcf83eaad6ef73c4695d1ddc663f5555",
 		rules: {
 			pattern: {
 				value: /^[0-9a-fA-F]{40}$/,
@@ -93,6 +98,8 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 	uuid: {
 		name: "Entry UUID",
 		helperText: <>Search by the universally unique identifier value.</>,
+		placeholder:
+			"24296fb24b8ad77a71b9c1374e207537bafdd75b4f591dcee10f3f697f150d7cc5d0b725eea641e7",
 		rules: {
 			pattern: {
 				value: /^[0-9a-fA-F]{64}|[0-9a-fA-F]{80}$/,
@@ -105,6 +112,7 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 	logIndex: {
 		name: "Log Index",
 		helperText: <>Search by the log index number.</>,
+		placeholder: "1234567",
 		rules: {
 			min: {
 				value: 0,
@@ -232,7 +240,9 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 											watchAttribute
 										].name.toLowerCase()}`}
 										label={inputConfigByAttribute[watchAttribute].name}
-										placeholder={inputConfigByAttribute[watchAttribute].name}
+										placeholder={
+											inputConfigByAttribute[watchAttribute].placeholder
+										}
 										type={
 											inputConfigByAttribute[watchAttribute].name === "email"
 												? "email"
@@ -261,10 +271,10 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 				</Flex>
 				<Flex
 					direction={{ default: "column" }}
-					alignSelf={{ default: "alignSelfFlexEnd" }}
+					alignSelf={{ default: "alignSelfFlexStart" }}
 					flex={{ default: "flex_1" }}
 				>
-					<FlexItem>
+					<FlexItem style={{ marginTop: "2em" }}>
 						<Button
 							variant="primary"
 							id="search-form-button"
