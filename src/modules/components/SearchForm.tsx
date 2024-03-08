@@ -12,7 +12,7 @@ import {
 	Popover,
 	TextInput,
 } from "@patternfly/react-core";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Controller, RegisterOptions, useForm } from "react-hook-form";
 import { Attribute, ATTRIBUTES } from "../api/rekor_api";
 import { ExclamationCircleIcon, HelpIcon } from "@patternfly/react-icons";
@@ -121,6 +121,47 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 				value: "",
 			},
 		});
+	const [attrHelperHeader, setAttrHelperHeader] = useState(
+		<div>
+			The{" "}
+			<a
+				href="https://schema.org/name"
+				target="_blank"
+				rel="noreferrer"
+			>
+				name
+			</a>{" "}
+			of a{" "}
+			<a
+				href="https://schema.org/Person"
+				target="_blank"
+				rel="noreferrer"
+			>
+				Person
+			</a>
+		</div>,
+	);
+	const [attrHelperBody, setAttrHelperBody] = useState(
+		<div>
+			Often composed of{" "}
+			<a
+				href="https://schema.org/givenName"
+				target="_blank"
+				rel="noreferrer"
+			>
+				givenName
+			</a>{" "}
+			and{" "}
+			<a
+				href="https://schema.org/familyName"
+				target="_blank"
+				rel="noreferrer"
+			>
+				familyName
+			</a>
+			.
+		</div>,
+	);
 
 	useEffect(() => {
 		if (defaultValues) {
@@ -166,51 +207,12 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 									fieldId={"rekor-search-attribute"}
 									labelIcon={
 										<Popover
-											headerContent={
-												<div>
-													The{" "}
-													<a
-														href="https://schema.org/name"
-														target="_blank"
-														rel="noreferrer"
-													>
-														name
-													</a>{" "}
-													of a{" "}
-													<a
-														href="https://schema.org/Person"
-														target="_blank"
-														rel="noreferrer"
-													>
-														Person
-													</a>
-												</div>
-											}
-											bodyContent={
-												<div>
-													Often composed of{" "}
-													<a
-														href="https://schema.org/givenName"
-														target="_blank"
-														rel="noreferrer"
-													>
-														givenName
-													</a>{" "}
-													and{" "}
-													<a
-														href="https://schema.org/familyName"
-														target="_blank"
-														rel="noreferrer"
-													>
-														familyName
-													</a>
-													.
-												</div>
-											}
+											headerContent={attrHelperHeader}
+											bodyContent={attrHelperBody}
 										>
 											<button
 												type="button"
-												aria-label="More info for name field"
+												aria-label="More info for attribute field"
 												onClick={e => e.preventDefault()}
 												aria-describedby="form-group-label-info"
 												className={styles.formGroupLabelHelp}
@@ -283,7 +285,6 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 				<Flex
 					direction={{ default: "column" }}
 					alignSelf={{ default: "alignSelfFlexEnd" }}
-					grow={{ default: "grow" }}
 				>
 					<FlexItem>
 						<Button

@@ -22,6 +22,7 @@ import { CogIcon, GithubIcon } from "@patternfly/react-icons";
 import Link from "next/link";
 import Image from "next/image";
 import NOSSRWrapper from "../modules/utils/noSSR";
+import logo from "/public/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg";
 
 const Home: NextPage = () => {
 	const [settingsOpen, setSettingsOpen] = useState(false);
@@ -33,10 +34,10 @@ const Home: NextPage = () => {
 					<MastheadMain>
 						<Link
 							href={"/"}
-							className={"pf-v5-c-masthead_brand"}
+							as={"image"}
 						>
 							<Image
-								src={"/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg"}
+								src={logo}
 								alt={"Red Hat Trusted Artifact Signer logo"}
 								priority={true}
 								width={127}
