@@ -73,14 +73,14 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 			<>
 				Only compatible with{" "}
 				<a
-					href="https://github.com/sigstore/gitsign"
+					href="https://access.redhat.com/documentation/en-us/red_hat_trusted_artifact_signer/2024-q1/html/deployment_guide/verify_the_trusted_artifact_signer_installation#signing-and-verifying-commits-by-using-gitsign-from-the-command-line-interface_deploy"
 					target="_blank"
 					rel="noopener noreferrer"
 					style={{
 						textDecoration: "underline",
 					}}
 				>
-					sigstore/gitsign
+					gitsign
 				</a>{" "}
 				entries
 			</>
