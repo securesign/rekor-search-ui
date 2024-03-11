@@ -70,18 +70,6 @@ const Home: NextPage = () => {
 												ouiaId={"setting-button"}
 											/>
 										</ToolbarItem>
-										<ToolbarItem>
-											<Button
-												component="a"
-												href="https://github.com/sigstore/rekor-search-ui"
-												icon={<GithubIcon />}
-												target="_blank"
-												variant={"plain"}
-												ouiaId={"github-link"}
-												aria-label={"GitHub Link"}
-												rel="noopener noreferrer"
-											/>
-										</ToolbarItem>
 									</ToolbarGroup>
 								</ToolbarGroup>
 							</ToolbarContent>
