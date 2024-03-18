@@ -18,7 +18,7 @@ import {
 import { RekorClientProvider } from "../modules/api/context";
 import { Explorer } from "../modules/components/Explorer";
 import { Settings } from "../modules/components/Settings";
-import { CogIcon, GithubIcon } from "@patternfly/react-icons";
+import { CogIcon } from "@patternfly/react-icons";
 import Link from "next/link";
 import Image from "next/image";
 import NOSSRWrapper from "../modules/utils/noSSR";
@@ -112,3 +112,12 @@ const PageComponent: NextPage = () => (
 	</RekorClientProvider>
 );
 export default PageComponent;
+
+export async function getServerSideProps() {
+	return {
+		props: {
+			NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN:
+				process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
+		}, // will be passed to the page component as props
+	};
+}
