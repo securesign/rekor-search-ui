@@ -8,6 +8,8 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
+		"format": "prettier --check .",
+		"format:fix": "prettier --write .",
 		"lint": "next lint",
 		"generate": "./hack/generate_types.sh"
 	},
@@ -36,7 +38,8 @@
 		"caniuse-lite": "^1.0.30001441",
 		"eslint": "8.10.0",
 		"eslint-config-next": "13.0.0",
-		"prettier": "^3.0.0",
+		"eslint-config-prettier": "9.1.0",
+		"prettier": "3.2.5",
 		"typescript": "4.6.2"
 	}
 }
