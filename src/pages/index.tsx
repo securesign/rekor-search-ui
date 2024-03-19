@@ -116,8 +116,10 @@ export default PageComponent;
 export async function getServerSideProps() {
 	return {
 		props: {
-			NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN:
-				process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
-		}, // will be passed to the page component as props
+			NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: process.env
+				.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN
+				? process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN
+				: null,
+		}, // gets passed to the page component as props
 	};
 }

@@ -85,7 +85,7 @@ export function Settings({
 					fieldId="rekor-endpoint-override"
 				>
 					<TextInput
-						value={localBaseUrl ?? ""}
+						value={localBaseUrl ?? "https://rekor.sigstore.dev"}
 						type="text"
 						onChange={handleChangeBaseUrl}
 						placeholder={
