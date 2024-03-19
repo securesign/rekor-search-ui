@@ -1,3 +1,23 @@
 {
-	"extends": ["next", "prettier"]
+	"extends": [
+		"next/core-web-vitals",
+		"plugin:testing-library/react",
+		"plugin:react-hooks/recommended",
+		"prettier"
+	],
+	"plugins": ["react-hooks"],
+	"overrides": [
+		// Only use Testing Library lint rules in test files
+		{
+			"files": [
+				"**/__tests__/**/*.[jt]s?(x)",
+				"**/?(*.)+(spec|test).[jt]s?(x)"
+			],
+			"extends": ["plugin:testing-library/react"]
+		}
+	],
+	"rules": {
+		"@next/next/no-before-interactive-script-outside-document": "off",
+		"no-unused-vars": [1, { "args": "after-used", "argsIgnorePattern": "^_" }]
+	}
 }
