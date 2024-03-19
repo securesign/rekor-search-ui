@@ -2,9 +2,15 @@ This repo contains a simple UI for searching Search the Rekor public transparenc
 
 https://search.sigstore.dev/
 
-![Rekor UI Screenshot](assets/screenshot2.png)
+![Rekor UI Screenshot](assets/screenshot.png)
 
 ## Getting Started
+
+Install dependencies:
+
+```bash
+npm install
+```
 
 First, run the development server:
 
@@ -34,7 +40,7 @@ The app is based on [Next.JS](https://nextjs.org/) and is automatically built & 
 
 ## Internal Server Configuration
 
-This app supports overriding of the default rekor server instance for those running private instances of the the sigstore stack.
+This app supports overriding of the default rekor server instance for those running private instances of the sigstore stack.
 Create a `.env.local` file at the root and include in it this environment variable
 
 ```properties
