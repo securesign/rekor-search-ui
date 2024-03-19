@@ -2,6 +2,10 @@ const { codecovWebpackPlugin } = require("@codecov/webpack-plugin");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	env: {
+		NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN:
+			process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
+	},
 	reactStrictMode: true,
 	publicRuntimeConfig: {
 		// remove private env variables
