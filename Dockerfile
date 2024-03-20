@@ -2,7 +2,6 @@ FROM registry.access.redhat.com/ubi9/nodejs-18@sha256:773645c3eae02529e09c04a843
 #
 COPY . .
 USER root
-ENV NODE_ENV production
 EXPOSE 3000
 RUN echo "export PATH=${PATH}:$HOME/node_modules/.bin" >> ~/.bashrc && \
     npm install --ignore-scripts && \
