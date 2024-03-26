@@ -1,8 +1,13 @@
-jest.mock("next/router");
-// @ts-ignore
+// @ts-nocheck
 import atobMock from "../../__mocks__/atobMock";
+import decodex509Mock from "../../__mocks__/decodex509Mock";
 
-import { RekorClientProvider } from "../api/context";
+jest.mock("next/router");
+
+jest.mock("../x509/decode", () => ({
+	decodex509: decodex509Mock,
+}));
+
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { DSSEViewer } from "./DSSE";
@@ -10,6 +15,7 @@ import { DSSEV001Schema } from "rekor";
 
 describe("DSSEViewer Component", () => {
 	beforeAll(() => {
+		jest.clearAllMocks();
 		atobMock();
 	});
 
@@ -32,11 +38,7 @@ describe("DSSEViewer Component", () => {
 	};
 
 	it("renders without crashing", () => {
-		render(
-			<RekorClientProvider>
-				<DSSEViewer dsse={mockDSSE} />
-			</RekorClientProvider>,
-		);
+		render(<DSSEViewer dsse={mockDSSE} />);
 		expect(screen.getByText("Hash")).toBeInTheDocument();
 	});
 
@@ -56,7 +58,7 @@ describe("DSSEViewer Component", () => {
 		).toBeInTheDocument();
 	});
 
-	it.skip("displays the public key certificate title and content correctly", () => {
+	it("displays the public key certificate title and content correctly", () => {
 		render(<DSSEViewer dsse={mockDSSE} />);
 		expect(screen.getByText("Public Key Certificate")).toBeInTheDocument();
 	});

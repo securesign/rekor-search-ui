@@ -1,9 +1,14 @@
 const atobMock = () => {
 	window.atob = jest.fn().mockImplementation(str => {
-		const decoded = Buffer.from(str, "base64").toString("utf-8");
-		console.log(`Decoding: ${str}, Result: ${decoded}`);
+		const base64Pattern =
+			/^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/;
 
-		return decoded;
+		if (!base64Pattern.test(str)) {
+			// return if string is not base64 encoded
+			return str;
+		}
+
+		return Buffer.from(str, "base64").toString("utf-8");
 	});
 };
 

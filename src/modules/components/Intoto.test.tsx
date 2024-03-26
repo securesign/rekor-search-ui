@@ -39,7 +39,7 @@ describe("IntotoViewer", () => {
 		},
 	};
 
-	it.skip("renders the component with payload hash, signature, and certificate", () => {
+	it("renders the component with payload hash, signature, and certificate", () => {
 		render(<IntotoViewer intoto={mockIntoto} />);
 
 		// verify the hash link is rendered correctly
