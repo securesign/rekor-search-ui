@@ -5,6 +5,7 @@
 		"plugin:react-hooks/recommended",
 		"prettier"
 	],
+	"ignorePatterns": ["**/*.stories.tsx"],
 	"plugins": ["react-hooks"],
 	"overrides": [
 		// Only use Testing Library lint rules in test files

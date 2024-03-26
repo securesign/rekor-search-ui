@@ -1,4 +1,6 @@
 jest.mock("next/router");
+// @ts-ignore
+import atobMock from "../../__mocks__/atobMock";
 
 import { RekorClientProvider } from "../api/context";
 import { render, screen } from "@testing-library/react";
@@ -6,27 +8,29 @@ import "@testing-library/jest-dom";
 import { DSSEViewer } from "./DSSE";
 import { DSSEV001Schema } from "rekor";
 
-const mockDSSE: DSSEV001Schema = {
-	payloadHash: {
-		algorithm: "sha256",
-		value: "exampleHashValue",
-	},
-	signatures: [
-		{
-			signature: "exampleSignature",
-			verifier:
-				"-----BEGIN CERTIFICATE-----\nexamplePublicKey\n-----END CERTIFICATE-----",
-		},
-	],
-};
-
-beforeAll(() => {
-	window.atob = jest
-		.fn()
-		.mockImplementation(str => Buffer.from(str, "base64").toString("utf-8"));
-});
-
 describe("DSSEViewer Component", () => {
+	beforeAll(() => {
+		atobMock();
+	});
+
+	afterAll(() => {
+		jest.restoreAllMocks();
+	});
+
+	const mockDSSE: DSSEV001Schema = {
+		payloadHash: {
+			algorithm: "sha256",
+			value: "exampleHashValue",
+		},
+		signatures: [
+			{
+				signature: "exampleSignature",
+				verifier:
+					"-----BEGIN CERTIFICATE-----\nexamplePublicKey\n-----END CERTIFICATE-----",
+			},
+		],
+	};
+
 	it("renders without crashing", () => {
 		render(
 			<RekorClientProvider>
