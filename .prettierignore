@@ -2,7 +2,6 @@
 build*
 node_modules*
 .next*
-**/generated/**
 LICENSE
 .gitignore
 .tekton
