@@ -64,16 +64,8 @@
 		"husky": "^9.0.11",
 		"jest": "^29.7.0",
 		"jest-environment-jsdom": "^29.7.0",
-		"lint-staged": "^15.2.2",
 		"prettier": "3.2.5",
 		"storybook": "^8.0.7",
 		"typescript": "4.6.2"
-	},
-	"lint-staged": {
-		"!(*stories).{ts,tsx}": [
-			"prettier --write",
-			"next lint --max-warnings 0 --fix --file ."
-		],
-		"!(*stories).{js,css,md}": "prettier --write"
 	}
 }

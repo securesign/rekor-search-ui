@@ -30,8 +30,12 @@ export const RekorClientProvider: FunctionComponent<PropsWithChildren<{}>> = ({
 		Variables missing this prefix are only accessible in the Node.js environment.
 		https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables
 		*/
-		if (baseUrl === undefined && process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN) {
-			setBaseUrl(process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
+		if (baseUrl === undefined) {
+			if (process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN) {
+				setBaseUrl(process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
+			} else {
+				setBaseUrl("https://rekor.sigstore.dev");
+			}
 		}
 
 		return {
