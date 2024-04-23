@@ -42,6 +42,16 @@ Launches the test runner in the interactive watch mode.
 
 Tests are co-located and live as closely to corresponding code as possible.
 
+## Stories
+
+We use [Storybook](https://storybook.js.org/) for [Component Driven Development](https://www.componentdriven.org/) (CDD) where possible. Storybook makes it easy to keep presentational components isolated. You can learn more about how to create a story for your UI component [here](https://storybook.js.org/docs/react/writing-stories/introduction).
+
+To run Storybook locally: `npm run storybook`
+
+```bash
+npm run storybook
+```
+
 ## Deploy
 
 The app is based on [Next.JS](https://nextjs.org/) and is automatically built & deployed to GitHub Pages when pushing to the `main` branch.
