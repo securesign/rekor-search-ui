@@ -74,7 +74,7 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} build && touch ./out/.nojekyll
+        run: "npm run build && touch ./out/.nojekyll"
         env:
           NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: ${{ secrets.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN }}
       #      - name: Static HTML export with Next.js
