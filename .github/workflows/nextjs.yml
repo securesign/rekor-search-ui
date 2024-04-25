@@ -29,8 +29,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4.1.3
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -73,16 +73,18 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Extract repository name
+        run: echo "BASE_PATH=/$(echo $GITHUB_REPOSITORY | cut -d '/' -f 2)" >> $GITHUB_ENV
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: ${{ steps.detect-package-manager.outputs.runner }} build && touch ./out/.nojekyll
         env:
           NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: ${{ secrets.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN }}
       #      - name: Static HTML export with Next.js
       #        run: ${{ steps.detect-package-manager.outputs.runner }} next export
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: ./out
+  #      - name: Upload artifact
+  #        uses: actions/upload-pages-artifact@v4
+  #        with:
+  #          path: ./out
 
   # Deployment job
   deploy:
@@ -92,6 +94,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+      #      - name: Deploy to GitHub Pages
+      #        id: deployment
+      #        uses: actions/deploy-pages@v4
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.6.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+          folder: out

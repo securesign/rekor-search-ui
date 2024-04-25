@@ -7,6 +7,12 @@ const nextConfig = {
 			process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
 	},
 	reactStrictMode: true,
+	assetPrefix: "./",
+	images: {
+		loader: "akamai",
+		path: "",
+	},
+	output: "export",
 	publicRuntimeConfig: {
 		// remove private env variables
 		processEnv: Object.fromEntries(
