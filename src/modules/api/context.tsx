@@ -7,6 +7,7 @@ import {
 	useState,
 } from "react";
 import { RekorClient } from "rekor";
+import getConfig from "next/config";
 
 export interface RekorClientContext {
 	client: RekorClient;
@@ -22,6 +23,7 @@ export const RekorClientProvider: FunctionComponent<PropsWithChildren<{}>> = ({
 	children,
 }) => {
 	const [baseUrl, setBaseUrl] = useState<string>();
+	const { publicRuntimeConfig } = getConfig();
 
 	const context: RekorClientContext = useMemo(() => {
 		/*
@@ -31,8 +33,8 @@ export const RekorClientProvider: FunctionComponent<PropsWithChildren<{}>> = ({
 		https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables
 		*/
 		if (baseUrl === undefined) {
-			if (process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN) {
-				setBaseUrl(process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
+			if (publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN) {
+				setBaseUrl(publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
 			} else {
 				setBaseUrl("https://rekor.sigstore.dev");
 			}
