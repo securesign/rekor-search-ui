@@ -80,7 +80,7 @@ jobs:
           NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: ${{ secrets.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN }}
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
 
