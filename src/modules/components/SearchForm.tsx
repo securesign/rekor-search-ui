@@ -12,7 +12,7 @@ import {
 	Popover,
 	TextInput,
 } from "@patternfly/react-core";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import { Controller, RegisterOptions, useForm } from "react-hook-form";
 import { Attribute, ATTRIBUTES } from "../api/rekor_api";
 import { ExclamationCircleIcon, HelpIcon } from "@patternfly/react-icons";
