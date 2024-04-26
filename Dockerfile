@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/nodejs-18@sha256:773645c3eae02529e09c04a843a0c6783de45b084b325685b043b7818c7a8bf6 as Build
+FROM registry.access.redhat.com/ubi9/nodejs-18@sha256:b024fc3800fb76d1cfd6571c4f3355fba1b002c34026e61aee41a1346112ee92 as Build
 #
 COPY . .
 USER root
