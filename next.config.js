@@ -12,7 +12,7 @@ const nextConfig = {
 		loader: "akamai",
 		path: "",
 	},
-	output: "export",
+	// output: "export",
 	publicRuntimeConfig: {
 		// remove private env variables
 		processEnv: Object.fromEntries(
