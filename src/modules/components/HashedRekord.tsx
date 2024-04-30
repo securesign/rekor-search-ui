@@ -1,10 +1,10 @@
-import { Box, Link, Typography } from "@mui/material";
 import { dump } from "js-yaml";
-import NextLink from "next/link";
+import Link from "next/link";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { RekorSchema } from "rekor";
 import { decodex509 } from "../x509/decode";
+import { Panel, Text, TextVariants } from "@patternfly/react-core";
 
 export function HashedRekordViewer({
 	hashedRekord,
@@ -28,20 +28,18 @@ export function HashedRekordViewer({
 	}
 
 	return (
-		<Box>
-			<Typography
-				variant="h5"
-				sx={{ py: 1 }}
+		<Panel style={{ marginTop: "1.25em" }}>
+			<Text
+				component={TextVariants.h5}
+				style={{ margin: "1em auto" }}
 			>
 				<Link
-					component={NextLink}
 					href={`/?hash=${hashedRekord.data.hash?.algorithm}:${hashedRekord.data.hash?.value}`}
 					passHref
 				>
 					Hash
 				</Link>
-			</Typography>
-
+			</Text>
 			<SyntaxHighlighter
 				language="text"
 				style={atomDark}
@@ -49,30 +47,31 @@ export function HashedRekordViewer({
 				{`${hashedRekord.data.hash?.algorithm}:${hashedRekord.data.hash?.value}`}
 			</SyntaxHighlighter>
 
-			<Typography
-				variant="h5"
-				sx={{ py: 1 }}
+			<Text
+				component={TextVariants.h5}
+				style={{ margin: "1em auto" }}
 			>
 				Signature
-			</Typography>
+			</Text>
 			<SyntaxHighlighter
 				language="text"
 				style={atomDark}
 			>
 				{hashedRekord.signature.content || ""}
 			</SyntaxHighlighter>
-			<Typography
-				variant="h5"
-				sx={{ py: 1 }}
+
+			<Text
+				component={TextVariants.h5}
+				style={{ margin: "1em auto" }}
 			>
 				{publicKey.title}
-			</Typography>
+			</Text>
 			<SyntaxHighlighter
 				language="yaml"
 				style={atomDark}
 			>
 				{publicKey.content}
 			</SyntaxHighlighter>
-		</Box>
+		</Panel>
 	);
 }

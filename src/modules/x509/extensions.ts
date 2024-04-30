@@ -13,7 +13,7 @@ import { KEY_USAGE_NAMES } from "./constants";
 
 interface ExtensionConfig {
 	name: string;
-	toJSON: (rawExtension: Extension) => {};
+	toJSON: (_rawExtension: Extension) => {};
 }
 
 const UTF_8_DECODER = new TextDecoder("utf-8");
