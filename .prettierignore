@@ -2,5 +2,15 @@
 build*
 node_modules*
 .next*
-**/generated/**
 LICENSE
+.gitignore
+.tekton
+.github
+.husky
+.swc
+assets
+coverage
+cypress/downloads
+cypress/screenshots
+out
+public
