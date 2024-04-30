@@ -1,3 +1,4 @@
+import { FormEvent, useCallback, useState } from "react";
 import { useRekorBaseUrl } from "../api/context";
 import {
 	Modal,
@@ -10,36 +11,50 @@ import {
 	HelperText,
 	HelperTextItem,
 	FormHelperText,
+	ValidatedOptions,
 } from "@patternfly/react-core";
 import { ExclamationCircleIcon, HelpIcon } from "@patternfly/react-icons";
 import styles from "@patternfly/react-styles/css/components/Form/form";
 import { validateUrl } from "../utils/validateUrl";
-import { Controller, useForm } from "react-hook-form";
 
-export interface SettingsProps {
-	onClose: () => void;
+export function Settings({
+	open,
+	onClose,
+}: {
 	open: boolean;
-}
-
-export function Settings({ open, onClose }: SettingsProps) {
+	onClose: () => void;
+}) {
 	const [baseUrl, setBaseUrl] = useRekorBaseUrl();
+	const [localBaseUrl, setLocalBaseUrl] = useState(baseUrl);
+	const [showValidation, setShowValidation] = useState(false);
 
-	const {
-		control,
-		formState: { errors, isValid },
-		handleSubmit,
-	} = useForm({
-		mode: "all",
-		reValidateMode: "onChange",
-		defaultValues: {
-			endpoint: baseUrl,
-		},
-	});
+	const handleChangeBaseUrl = useCallback((e: FormEvent<HTMLInputElement>) => {
+		if (e.currentTarget.value.length === 0) {
+			setLocalBaseUrl(undefined);
+		} else {
+			setLocalBaseUrl(e.currentTarget.value);
+		}
+	}, []);
 
-	const onSave = (data: any) => {
-		setBaseUrl(data.currentTarget.value);
+	const onSave = useCallback(() => {
+		if (!validateUrl(localBaseUrl)) {
+			console.log(!validateUrl(localBaseUrl));
+			setShowValidation(true);
+			return;
+		} else {
+			setShowValidation(false);
+		}
+
+		if (
+			localBaseUrl === undefined &&
+			process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN
+		) {
+			setLocalBaseUrl(process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
+		}
+
+		setBaseUrl(localBaseUrl);
 		onClose();
-	};
+	}, [localBaseUrl, setBaseUrl, onClose]);
 
 	return (
 		<Modal
@@ -51,9 +66,7 @@ export function Settings({ open, onClose }: SettingsProps) {
 				<Button
 					key="confirm"
 					variant="primary"
-					isDisabled={!isValid}
 					onClick={onSave}
-					type="submit"
 				>
 					Confirm
 				</Button>,
@@ -66,76 +79,54 @@ export function Settings({ open, onClose }: SettingsProps) {
 				</Button>,
 			]}
 		>
-			<Form
-				id="settings-form"
-				onSubmit={handleSubmit(onSave)}
-			>
-				<Controller
-					name="endpoint"
-					control={control}
-					rules={{
-						required: {
-							value: true,
-							message: "To continue, specify an endpoint in xxxx format",
-						},
-						validate: (url: string | undefined) => {
-							return (
-								validateUrl(url) ||
-								"To continue, provide a valid URL, starting with https://"
-							);
-						},
-					}}
-					render={({ field, fieldState }) => (
-						<FormGroup
-							label="Override Rekor Endpoint"
-							labelIcon={
-								<Popover
-									bodyContent={"Specify your private Rekor endpoint URL."}
+			<Form id="settings-form">
+				<FormGroup
+					label="Override Rekor Endpoint"
+					labelIcon={
+						<Popover bodyContent={"Specify your private Rekor endpoint URL."}>
+							<button
+								type="button"
+								aria-label="More info for name field"
+								onClick={e => e.preventDefault()}
+								aria-describedby="form-group-label-info"
+								className={styles.formGroupLabelHelp}
+							>
+								<HelpIcon />
+							</button>
+						</Popover>
+					}
+					isRequired
+					fieldId="rekor-endpoint-override"
+				>
+					<TextInput
+						value={localBaseUrl ?? "https://rekor.sigstore.dev"}
+						type="text"
+						onChange={handleChangeBaseUrl}
+						placeholder={
+							baseUrl === undefined
+								? "https://private.rekor.example.com"
+								: baseUrl
+						}
+						label={"name"}
+						aria-label="override rekor endpoint"
+						id={"rekor-endpoint-override"}
+						validated={showValidation ? ValidatedOptions.error : undefined}
+						aria-invalid={showValidation}
+						isRequired
+					/>
+					{showValidation && (
+						<FormHelperText>
+							<HelperText>
+								<HelperTextItem
+									icon={<ExclamationCircleIcon />}
+									variant={"error"}
 								>
-									<button
-										type="button"
-										aria-label="Rekor endpoint URL"
-										onClick={e => e.preventDefault()}
-										aria-describedby="rekor-endpoint-url"
-										className={styles.formGroupLabelHelp}
-									>
-										<HelpIcon />
-									</button>
-								</Popover>
-							}
-							isRequired
-							fieldId="rekor-endpoint-override"
-						>
-							<TextInput
-								type="text"
-								{...field}
-								aria-invalid={errors.endpoint ? "true" : "false"}
-								placeholder={
-									baseUrl === undefined
-										? "https://private.rekor.example.com"
-										: baseUrl
-								}
-								label={"name"}
-								aria-label="override rekor endpoint"
-								id={"rekor-endpoint-override"}
-								validated={fieldState.invalid ? "error" : "default"}
-							/>
-
-							{fieldState.invalid && (
-								<FormHelperText>
-									<HelperText>
-										<HelperTextItem
-											icon={<ExclamationCircleIcon />}
-											variant={"error"}
-										>
-											{fieldState.error?.message}
-										</HelperTextItem>
-									</HelperText>
-								</FormHelperText>
-							)}
-						</FormGroup>
+									To continue, specify an endpoint in https://xxxx format
+								</HelperTextItem>
+							</HelperText>
+						</FormHelperText>
 					)}
-				/>
+				</FormGroup>
 			</Form>
 		</Modal>
 	);
