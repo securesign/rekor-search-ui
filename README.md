@@ -42,6 +42,20 @@ Launches the test runner in the interactive watch mode.
 
 Tests are co-located and live as closely to corresponding code as possible.
 
+### E2E Tests
+
+Run all [Cypress](https://www.cypress.io/) e2e tests:
+
+```bash
+npm run cy:open
+```
+
+Or in headless mode:
+
+```bash
+npm run cy:headless
+```
+
 ## Stories
 
 We use [Storybook](https://storybook.js.org/) for [Component Driven Development](https://www.componentdriven.org/) (CDD) where possible. Storybook makes it easy to keep presentational components isolated. You can learn more about how to create a story for your UI component [here](https://storybook.js.org/docs/react/writing-stories/introduction).

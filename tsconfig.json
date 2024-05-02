@@ -26,5 +26,5 @@
 		".next/types/**/*.ts",
 		"jest.setup.js"
 	],
-	"exclude": ["node_modules"]
+	"exclude": ["coverage", "cypress", "node_modules"]
 }
