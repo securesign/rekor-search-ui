@@ -66,6 +66,7 @@ const Home: NextPage = () => {
 												variant={"plain"}
 												icon={<CogIcon />}
 												ouiaId={"setting-button"}
+												data-testid={"settings-button"}
 											/>
 										</ToolbarItem>
 									</ToolbarGroup>
