@@ -36,32 +36,30 @@ export function Settings({
 		}
 	}, []);
 
+	const handleClose = useCallback(() => {
+		setLocalBaseUrl(baseUrl);
+		setShowValidation(false);
+		onClose();
+	}, [baseUrl, onClose]);
+
 	const onSave = useCallback(() => {
 		if (!validateUrl(localBaseUrl)) {
-			console.log(!validateUrl(localBaseUrl));
 			setShowValidation(true);
 			return;
 		} else {
+			setBaseUrl(localBaseUrl);
 			setShowValidation(false);
 		}
 
-		if (
-			localBaseUrl === undefined &&
-			process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN
-		) {
-			setLocalBaseUrl(process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
-		}
-
-		setBaseUrl(localBaseUrl);
 		onClose();
-	}, [localBaseUrl, setBaseUrl, onClose]);
+	}, [localBaseUrl, onClose, setBaseUrl]);
 
 	return (
 		<Modal
 			variant={ModalVariant.small}
 			title="Settings"
 			isOpen={open}
-			onClose={onClose}
+			onClose={handleClose}
 			actions={[
 				<Button
 					key="confirm"
@@ -73,7 +71,7 @@ export function Settings({
 				<Button
 					key="cancel"
 					variant="link"
-					onClick={onClose}
+					onClick={handleClose}
 				>
 					Cancel
 				</Button>,
@@ -99,7 +97,7 @@ export function Settings({
 					fieldId="rekor-endpoint-override"
 				>
 					<TextInput
-						value={localBaseUrl ?? "https://rekor.sigstore.dev"}
+						value={localBaseUrl ?? baseUrl}
 						type="text"
 						onChange={handleChangeBaseUrl}
 						placeholder={
