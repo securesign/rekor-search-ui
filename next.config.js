@@ -14,6 +14,8 @@ const nextConfig = {
 	},
 	// output: "export",
 	publicRuntimeConfig: {
+		NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN:
+			process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
 		// remove private env variables
 		processEnv: Object.fromEntries(
 			Object.entries(process.env).filter(([key]) =>
