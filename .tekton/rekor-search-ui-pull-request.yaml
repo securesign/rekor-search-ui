@@ -17,6 +17,8 @@ metadata:
   name: rekor-search-ui-on-pull-request
   namespace: rhtas-tenant
 spec:
+  timeouts:
+    pipeline: "1h30m0s"
   params:
   - name: dockerfile
     value: Dockerfile
