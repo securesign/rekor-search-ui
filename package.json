@@ -14,7 +14,7 @@
 		"format:fix": "prettier --write .",
 		"lint": "next lint",
 		"generate": "./hack/generate_types.sh",
-		"prepare": "husky && husky install",
+		"prepare": "husky && husky init",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:ci": "jest --ci",
