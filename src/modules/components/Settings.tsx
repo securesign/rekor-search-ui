@@ -60,11 +60,13 @@ export function Settings({
 			title="Settings"
 			isOpen={open}
 			onClose={handleClose}
+			data-testid="settings-modal"
 			actions={[
 				<Button
 					key="confirm"
 					variant="primary"
 					onClick={onSave}
+					data-testid={"settings-confirm-button"}
 				>
 					Confirm
 				</Button>,
@@ -72,6 +74,7 @@ export function Settings({
 					key="cancel"
 					variant="link"
 					onClick={handleClose}
+					data-testid={"settings-close-button"}
 				>
 					Cancel
 				</Button>,
@@ -84,9 +87,10 @@ export function Settings({
 						<Popover bodyContent={"Specify your private Rekor endpoint URL."}>
 							<button
 								type="button"
-								aria-label="More info for name field"
+								aria-label="More info for endpoint field"
 								onClick={e => e.preventDefault()}
 								aria-describedby="form-group-label-info"
+								data-testid={"rekor-endpoint-help-button"}
 								className={styles.formGroupLabelHelp}
 							>
 								<HelpIcon />
@@ -110,6 +114,7 @@ export function Settings({
 						id={"rekor-endpoint-override"}
 						validated={showValidation ? ValidatedOptions.error : undefined}
 						aria-invalid={showValidation}
+						data-testid={"rekor-endpoint-override"}
 						isRequired
 					/>
 					{showValidation && (
