@@ -1,9 +1,21 @@
-const { codecovWebpackPlugin } = require("@codecov/webpack-plugin");
+// const { codecovWebpackPlugin } = require("@codecov/webpack-plugin");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	env: {
+		NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN:
+			process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
+	},
 	reactStrictMode: true,
+	assetPrefix: "./",
+	images: {
+		loader: "akamai",
+		path: "",
+	},
+	// output: "export",
 	publicRuntimeConfig: {
+		NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN:
+			process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
 		// remove private env variables
 		processEnv: Object.fromEntries(
 			Object.entries(process.env).filter(([key]) =>
@@ -21,11 +33,11 @@ const nextConfig = {
 			...config.plugins,
 
 			// keep codecov webpack plugin after all other plugins
-			codecovWebpackPlugin({
-				enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
-				bundleName: "rekor-search-ui-webpack-bundle",
-				uploadToken: process.env.CODECOV_TOKEN,
-			}),
+			// codecovWebpackPlugin({
+			// 	enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+			// 	bundleName: "rekor-search-ui-webpack-bundle",
+			// 	uploadToken: process.env.CODECOV_TOKEN,
+			// }),
 		];
 
 		// important: return the modified config
