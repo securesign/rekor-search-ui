@@ -101,7 +101,7 @@ export function Entry({ entry }: { entry: LogEntry }) {
 				? [
 						...expanded.slice(0, index),
 						...expanded.slice(index + 1, expanded.length),
-				  ]
+					]
 				: [...expanded, id];
 		setExpanded(newExpanded);
 	};

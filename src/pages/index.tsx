@@ -18,10 +18,11 @@ import {
 import { RekorClientProvider } from "../modules/api/context";
 import { Explorer } from "../modules/components/Explorer";
 import { Settings } from "../modules/components/Settings";
-import { CogIcon, GithubIcon } from "@patternfly/react-icons";
+import { CogIcon } from "@patternfly/react-icons";
 import Link from "next/link";
 import Image from "next/image";
 import NOSSRWrapper from "../modules/utils/noSSR";
+import logo from "/public/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg";
 
 const Home: NextPage = () => {
 	const [settingsOpen, setSettingsOpen] = useState(false);
@@ -31,12 +32,9 @@ const Home: NextPage = () => {
 			header={
 				<Masthead>
 					<MastheadMain>
-						<Link
-							href={"/"}
-							className={"pf-v5-c-masthead_brand"}
-						>
+						<Link href={"/"}>
 							<Image
-								src={"/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg"}
+								src={logo}
 								alt={"Red Hat Trusted Artifact Signer logo"}
 								priority={true}
 								width={127}
@@ -68,18 +66,7 @@ const Home: NextPage = () => {
 												variant={"plain"}
 												icon={<CogIcon />}
 												ouiaId={"setting-button"}
-											/>
-										</ToolbarItem>
-										<ToolbarItem>
-											<Button
-												component="a"
-												href="https://github.com/sigstore/rekor-search-ui"
-												icon={<GithubIcon />}
-												target="_blank"
-												variant={"plain"}
-												ouiaId={"github-link"}
-												aria-label={"GitHub Link"}
-												rel="noopener noreferrer"
+												data-testid={"settings-button"}
 											/>
 										</ToolbarItem>
 									</ToolbarGroup>

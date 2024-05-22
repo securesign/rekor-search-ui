@@ -11,6 +11,7 @@
 # production
 /build
 /.next
+out
 
 # misc
 .DS_Store
@@ -20,6 +21,7 @@
 .env.production.local
 
 npm-debug.log*
+*storybook.log*
 yarn-debug.log*
 yarn-error.log*
 
@@ -28,3 +30,8 @@ yarn-error.log*
 **/.vscode/
 
 **/.DS_Store
+
+# cypress
+/cypress/downloads
+/cypress/videos
+/cypress/screenshots
