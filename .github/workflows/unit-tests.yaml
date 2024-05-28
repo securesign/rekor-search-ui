@@ -1,4 +1,4 @@
-name: 🧪 Unit Tests (Jest)
+name: Unit Tests (Jest)  🧪
 
 on:
   push:

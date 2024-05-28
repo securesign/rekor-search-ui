@@ -1,0 +1,36 @@
+name: Cross Browser End-to-End Testing (Cypress)  🚀
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    types: [opened, reopened]
+  schedule:
+    - cron: '0 2 * * FRI'
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v4
+
+      - name: Run docker-compose 🐳
+        run: docker-compose up -d cypress
+
+      - name: Wait for services to start ⏱️
+        run: docker-compose logs -f
+
+      - name: Upload Electron artifacts 📸
+        uses: actions/upload-artifact@v4
+        with:
+          name: electron-artifacts
+          path: |
+            ./artifacts/electron/videos
+            ./artifacts/electron/screenshots
+          if-no-files-found: ignore
+          retention-days: 5
+

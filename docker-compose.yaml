@@ -1,0 +1,29 @@
+services:
+  nextjs:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm start
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN=https://rekor.sigstore.dev
+
+  cypress:
+    build:
+      context: .
+      dockerfile: cypress.Dockerfile
+      args:
+        NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: https://rekor.sigstore.dev
+    depends_on:
+      - nextjs
+    volumes:
+      # set mappings to access artifacts outside of containers
+      - ./artifacts/electron/videos:/e2e/cypress/videos
+      - ./artifacts/electron/screenshots:/e2e/cypress/screenshots
+    environment:
+      - CYPRESS_BASE_URL=http://nextjs:3000
+    # run electron in headless mode
+    command: npx cypress run
