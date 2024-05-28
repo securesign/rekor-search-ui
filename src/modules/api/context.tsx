@@ -3,15 +3,17 @@ import {
 	FunctionComponent,
 	PropsWithChildren,
 	useContext,
+	useEffect,
 	useMemo,
 	useState,
 } from "react";
 import { RekorClient } from "rekor";
+import getConfig from "next/config";
 
 export interface RekorClientContext {
 	client: RekorClient;
 	baseUrl?: string;
-	setBaseUrl: (base: string | undefined) => void;
+	setBaseUrl: (_base: string | undefined) => void;
 }
 
 export const RekorClientContext = createContext<RekorClientContext | undefined>(
@@ -22,16 +24,28 @@ export const RekorClientProvider: FunctionComponent<PropsWithChildren<{}>> = ({
 	children,
 }) => {
 	const [baseUrl, setBaseUrl] = useState<string>();
+	const { publicRuntimeConfig } = getConfig();
+
+	useEffect(() => {
+		if (baseUrl === undefined) {
+			if (publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN) {
+				setBaseUrl(publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
+			} else {
+				setBaseUrl("https://rekor.sigstore.dev");
+			}
+		}
+	}, [
+		baseUrl,
+		publicRuntimeConfig,
+		publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
+	]);
 
 	const context: RekorClientContext = useMemo(() => {
-		/*
-		Using the Next.js framework, the NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN env variable requires
-		a NEXT_PUBLIC_* prefix to make the value of the variable accessible to the browser.
-		Variables missing this prefix are only accessible in the Node.js environment.
-		https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables
-		*/
-		if (baseUrl === undefined && process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN) {
-			setBaseUrl(process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
+		if (
+			baseUrl === undefined &&
+			publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN
+		) {
+			setBaseUrl(publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
 		}
 
 		return {
@@ -39,7 +53,7 @@ export const RekorClientProvider: FunctionComponent<PropsWithChildren<{}>> = ({
 			baseUrl,
 			setBaseUrl,
 		};
-	}, [baseUrl]);
+	}, [baseUrl, publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN]);
 
 	return (
 		<RekorClientContext.Provider value={context}>
