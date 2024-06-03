@@ -1,4 +1,5 @@
 [![🧪 Unit Tests (Jest) 🧪](https://github.com/securesign/rekor-search-ui/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/securesign/rekor-search-ui/actions/workflows/unit-tests.yaml)
+[![RHTAS Rekor Search UI](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/wdekco&style=flat&logo=cypress)](https://cloud.cypress.io/projects/wdekco/runs)
 [![codecov](https://codecov.io/gh/securesign/rekor-search-ui/graph/badge.svg?token=1QS2BK1PQL)](https://codecov.io/gh/securesign/rekor-search-ui)
 
 This repo contains a simple UI for searching Search the Rekor public transparency log.
