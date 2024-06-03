@@ -1,28 +1,70 @@
-name: Cross Browser End-to-End Testing (Cypress)  🚀
+name: End-to-End Testing (Cypress) 🚀
 
 on:
   push:
     branches:
-      - 'main'
+      - main
   pull_request:
-    types: [opened, reopened]
+    types: [opened, synchronize, reopened]
   schedule:
     - cron: '0 2 * * FRI'
 
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        browser: [ chrome, electron ]
+        env:
+          - name: no-variable
+            NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: ""
+          - name: with-variable
+            NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: "https://rekor.sigstore.dev"
+    env:
+      CYPRESS_baseUrl: ${{ matrix.env.url }}
 
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
 
-      - name: Run docker-compose 🐳
-        run: docker-compose up -d cypress
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
-      - name: Wait for services to start ⏱️
-        run: docker-compose logs -f
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Next.js app
+        run: npm run build
+        env:
+          NODE_ENV: ${{ matrix.env.name }}
+          NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: ${{ matrix.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN }}
+
+      - name: Start Next.js app
+        run: npm run start &
+        env:
+          NODE_ENV: ${{ matrix.env.name }}
+          NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: ${{ matrix.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN }}
+
+      - name: Wait for Next.js to start
+        run: npx wait-on http://localhost:3000
+
+      - name: Install browsers for Cypress
+        run: |
+          if [[ "${{ matrix.browser }}" == "chrome" ]]; then
+            sudo apt-get install -y google-chrome-stable;
+          elif [[ "${{ matrix.browser }}" == "firefox" ]]; then
+            sudo apt-get install -y firefox;
+          fi
+
+      - name: Run Cypress tests
+        run: npx cypress run --browser ${{ matrix.browser }}
+        env:
+          NODE_ENV: ${{ matrix.env.name }}
+          NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: ${{ matrix.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN }}
+          CYPRESS_baseUrl: "http://localhost:3000"
 
       - name: Upload Electron artifacts 📸
         uses: actions/upload-artifact@v4
@@ -33,4 +75,3 @@ jobs:
             ./artifacts/electron/screenshots
           if-no-files-found: ignore
           retention-days: 5
-
