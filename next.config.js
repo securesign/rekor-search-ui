@@ -12,7 +12,7 @@ const nextConfig = {
 		loader: "akamai",
 		path: "",
 	},
-	// output: "export",
+	output: "standalone",
 	publicRuntimeConfig: {
 		NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN:
 			process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
