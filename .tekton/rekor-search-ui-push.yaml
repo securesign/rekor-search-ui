@@ -382,12 +382,6 @@ spec:
     - name: git-auth
       optional: true
   taskRunTemplate: {}
-  taskRunSpecs:
-  - pipelineTaskName: build-container
-    serviceAccountName: appstudio-pipeline
-    podTemplate:
-      imagePullSecrets:
-        - name: securesign-rekor-search-ui
   workspaces:
   - name: workspace
     volumeClaimTemplate:
