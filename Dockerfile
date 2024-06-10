@@ -4,10 +4,10 @@ USER root
 
 COPY package.json package-lock.json ./
 RUN npm pkg delete scripts.prepare
-RUN npm ci --network-timeout=100000 || \
-    (echo "Retrying npm ci" && sleep 5 && npm ci \
+RUN npm ci --ignore-scripts --network-timeout=100000 || \
+    (echo "Retrying npm ci" && sleep 5 && npm ci --ignore-scripts \
     --network-timeout=100000) || \
-    (echo "Retrying npm ci again" && sleep 5 && npm ci \
+    (echo "Retrying npm ci again" && sleep 5 && npm ci --ignore-scripts \
     --network-timeout=100000)
 COPY . .
 RUN npm run build
