@@ -2,7 +2,7 @@
 	"name": "rekor-search-ui",
 	"version": "0.1.0",
 	"engines": {
-		"node": "18.x"
+		"node": "20.x"
 	},
 	"scripts": {
 		"dev": "next dev",
@@ -14,7 +14,7 @@
 		"format:fix": "prettier --write .",
 		"lint": "next lint",
 		"generate": "./hack/generate_types.sh",
-		"prepare": "husky && husky init",
+		"prepare": "husky",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:ci": "jest --ci",

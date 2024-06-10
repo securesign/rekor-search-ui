@@ -10,7 +10,7 @@ https://securesign.github.io/rekor-search-ui/
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en) 18.x+
+- [Node.js](https://nodejs.org/en) 20.x+
 - Access to a [Rekor server](https://github.com/securesign/rekor), or a full deployment of [Trusted Artifact Signer (TAS)](https://access.redhat.com/documentation/en-us/red_hat_trusted_artifact_signer/2024-q1/html/deployment_guide/verify_the_trusted_artifact_signer_installation)
 
 ## Getting Started

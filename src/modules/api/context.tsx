@@ -8,7 +8,6 @@ import {
 	useState,
 } from "react";
 import { RekorClient } from "rekor";
-import getConfig from "next/config";
 
 export interface RekorClientContext {
 	client: RekorClient;
@@ -20,40 +19,32 @@ export const RekorClientContext = createContext<RekorClientContext | undefined>(
 	undefined,
 );
 
-export const RekorClientProvider: FunctionComponent<PropsWithChildren<{}>> = ({
-	children,
-}) => {
-	const [baseUrl, setBaseUrl] = useState<string>();
-	const { publicRuntimeConfig } = getConfig();
+interface RekorClientProviderProps {
+	initialDomain?: string;
+}
+
+export const RekorClientProvider: FunctionComponent<
+	PropsWithChildren<RekorClientProviderProps>
+> = ({ children, initialDomain }) => {
+	const [baseUrl, setBaseUrl] = useState<string | undefined>(initialDomain);
 
 	useEffect(() => {
 		if (baseUrl === undefined) {
-			if (publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN) {
-				setBaseUrl(publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
+			if (process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN) {
+				setBaseUrl(process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
 			} else {
 				setBaseUrl("https://rekor.sigstore.dev");
 			}
 		}
-	}, [
-		baseUrl,
-		publicRuntimeConfig,
-		publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
-	]);
+	}, [baseUrl]);
 
 	const context: RekorClientContext = useMemo(() => {
-		if (
-			baseUrl === undefined &&
-			publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN
-		) {
-			setBaseUrl(publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN);
-		}
-
 		return {
 			client: new RekorClient({ BASE: baseUrl }),
 			baseUrl,
 			setBaseUrl,
 		};
-	}, [baseUrl, publicRuntimeConfig.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN]);
+	}, [baseUrl]);
 
 	return (
 		<RekorClientContext.Provider value={context}>

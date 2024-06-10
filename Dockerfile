@@ -3,7 +3,12 @@ FROM registry.access.redhat.com/ubi9/nodejs-20-minimal@sha256:129108930931cff554
 USER root
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm pkg delete scripts.prepare
+RUN npm ci --network-timeout=100000 || \
+    (echo "Retrying npm ci" && sleep 5 && npm ci \
+    --network-timeout=100000) || \
+    (echo "Retrying npm ci again" && sleep 5 && npm ci \
+    --network-timeout=100000)
 COPY . .
 RUN npm run build
 
