@@ -25,6 +25,12 @@ spec:
     value: quay.io/redhat-user-workloads/rhtas-tenant/rekor-search/rekor-search:{{revision}}
   - name: dockerfile
     value: Dockerfile
+  - name: build-source-image
+    value: "true"
+  - name: prefetch-input
+    value: '{"type": "npm", "path":"."}'
+  - name: hermetic
+    value: "true"
   pipelineSpec:
     finally:
     - name: show-sbom
