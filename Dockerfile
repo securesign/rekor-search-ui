@@ -1,24 +1,38 @@
-FROM registry.access.redhat.com/ubi9/nodejs-20@sha256:885a9ae3a7fcd8e24ab7a35ef344a30481a42c37ab5cf41339d8bcba46857cb1 as Build
-#
-COPY . .
+# Builder Stage
+FROM registry.access.redhat.com/ubi9/nodejs-20-minimal@sha256:129108930931cff55453cc6f54db1984f484a9d8f62dfbd9d25b4175e1ba7802 as builder
 USER root
-EXPOSE 3000
-RUN echo "export PATH=${PATH}:$HOME/node_modules/.bin" >> ~/.bashrc && \
-    npm install --ignore-scripts && \
-    npm run build && \
-    chmod -R 777 /opt/app-root/src/.npm && \
-    echo "NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN = ${NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN}" && \
-    npm cache clean --force
+
+COPY package.json package-lock.json ./
+RUN npm pkg delete scripts.prepare
+RUN npm ci --ignore-scripts --network-timeout=100000 || \
+    (echo "Retrying npm ci" && sleep 5 && npm ci --ignore-scripts \
+    --network-timeout=100000) || \
+    (echo "Retrying npm ci again" && sleep 5 && npm ci --ignore-scripts \
+    --network-timeout=100000)
+COPY . .
+RUN npm run build
+
+# Production Stage
+FROM registry.access.redhat.com/ubi9/nodejs-20-minimal@sha256:129108930931cff55453cc6f54db1984f484a9d8f62dfbd9d25b4175e1ba7802 as production
 USER 1001
-CMD ["node_modules/.bin/next", "start"]
+EXPOSE 3000
 
 LABEL \
-      com.redhat.component="trusted-artifact-signer-rekor-ui" \
-      name="trusted-artifact-signer-rekor-ui" \
-      version="0.0.1" \
-      summary="User Interface for checking Rekor Entries" \
-      description="Provides a user interface for checking Rekor Entries through a Node App" \
-      io.k8s.description="Provides a user interface for checking Rekor Entries through a Node App" \
-      io.k8s.display-name="Provides a user interface for checking Rekor Entries through a Node App" \
-      io.openshift.tags="rekor-ui, rekor, cli, rhtas, trusted, artifact, signer, sigstore" \
-      maintainer="trusted-artifact-signer@redhat.com"
+    com.redhat.component="trusted-artifact-signer-rekor-ui" \
+    name="trusted-artifact-signer-rekor-ui" \
+    version="0.0.1" \
+    summary="User Interface for checking Rekor Entries" \
+    description="Provides a user interface for checking Rekor Entries through a Node App" \
+    io.k8s.description="Provides a user interface for checking Rekor Entries through a Node App" \
+    io.k8s.display-name="Provides a user interface for checking Rekor Entries through a Node App" \
+    io.openshift.tags="rekor-ui, rekor, cli, rhtas, trusted, artifact, signer, sigstore" \
+    maintainer="trusted-artifact-signer@redhat.com"
+
+COPY --from=builder /opt/app-root/src/package.json .
+COPY --from=builder /opt/app-root/src/package-lock.json .
+COPY --from=builder /opt/app-root/src/next.config.js ./
+COPY --from=builder /opt/app-root/src/public ./public
+COPY --from=builder /opt/app-root/src/.next/standalone ./
+COPY --from=builder /opt/app-root/src/.next/static ./.next/static
+
+CMD ["node", "server.js"]

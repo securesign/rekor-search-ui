@@ -21,7 +21,7 @@ import styles from "@patternfly/react-styles/css/components/Form/form";
 export interface FormProps {
 	defaultValues?: FormInputs;
 	isLoading: boolean;
-	onSubmit: (query: FormInputs) => void;
+	onSubmit: (_query: FormInputs) => void;
 }
 
 export interface FormInputs {

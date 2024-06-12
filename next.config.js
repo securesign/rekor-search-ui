@@ -2,27 +2,13 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	env: {
-		NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN:
-			process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
-	},
 	reactStrictMode: true,
 	assetPrefix: "./",
 	images: {
 		loader: "akamai",
 		path: "",
 	},
-	// output: "export",
-	publicRuntimeConfig: {
-		NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN:
-			process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
-		// remove private env variables
-		processEnv: Object.fromEntries(
-			Object.entries(process.env).filter(([key]) =>
-				key.includes("NEXT_PUBLIC_"),
-			),
-		),
-	},
+	output: "standalone",
 	transpilePackages: [
 		"@patternfly/react-core",
 		"@patternfly/react-icons",
