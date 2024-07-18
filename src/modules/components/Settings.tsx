@@ -54,6 +54,11 @@ export function Settings({
 		onClose();
 	}, [localBaseUrl, onClose, setBaseUrl]);
 
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		onSave();
+	};
+
 	return (
 		<Modal
 			variant={ModalVariant.small}
@@ -80,7 +85,10 @@ export function Settings({
 				</Button>,
 			]}
 		>
-			<Form id="settings-form">
+			<Form
+				id="settings-form"
+				onSubmit={handleSubmit}
+			>
 				<FormGroup
 					label="Override Rekor Endpoint"
 					labelIcon={
@@ -130,6 +138,10 @@ export function Settings({
 						</FormHelperText>
 					)}
 				</FormGroup>
+				<button
+					type="submit"
+					style={{ display: "none" }}
+				></button>
 			</Form>
 		</Modal>
 	);
