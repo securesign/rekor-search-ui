@@ -26,7 +26,7 @@ export const isValidUrl = (url: string): boolean => {
 	try {
 		const parsedUrl = new URL(url);
 		// check for presence of a dot
-		return parsedUrl.hostname.includes(".");
+		return parsedUrl.hostname
 	} catch (error) {
 		return false;
 	}
