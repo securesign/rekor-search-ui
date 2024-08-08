@@ -36,11 +36,10 @@ describe("Settings Component", () => {
 				onClose={mockOnClose}
 			/>,
 		);
-		expect(screen.getByText("Override rekor endpoint")).toBeInTheDocument();
-		expect(
-			screen.getByPlaceholderText("https://initial.rekor.domain"),
-		).toBeInTheDocument();
-		expect(screen.getByText("Save")).toBeInTheDocument();
+		expect(screen.getByLabelText("override rekor endpoint")).toHaveValue(
+			"https://initial.rekor.domain",
+		);
+		expect(screen.getByText("Confirm")).toBeInTheDocument();
 		expect(screen.getByText("Cancel")).toBeInTheDocument();
 	});
 });

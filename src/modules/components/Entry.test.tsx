@@ -9,7 +9,7 @@ jest.mock("./HashedRekord", () => ({
 import atobMock from "../../__mocks__/atobMock";
 
 import { fireEvent, render, screen } from "@testing-library/react";
-import { Entry, Card } from "./Entry";
+import { Entry, EntryCard } from "./Entry";
 
 describe("Entry", () => {
 	beforeAll(() => {
@@ -57,10 +57,10 @@ describe("Entry", () => {
 	});
 });
 
-describe("Card", () => {
+describe("EntryCard", () => {
 	it("renders the title and content", () => {
 		render(
-			<Card
+			<EntryCard
 				title="Test Title"
 				content="Test Content"
 			/>,

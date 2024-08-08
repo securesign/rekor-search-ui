@@ -1,21 +1,27 @@
-import LoadingButton from "@mui/lab/LoadingButton";
 import {
-	FormControl,
-	Grid,
-	InputLabel,
-	MenuItem,
-	Select,
-	TextField,
-} from "@mui/material";
-import Paper from "@mui/material/Paper";
+	Button,
+	Flex,
+	FlexItem,
+	Form,
+	FormGroup,
+	FormHelperText,
+	FormSelect,
+	FormSelectOption,
+	HelperText,
+	HelperTextItem,
+	Popover,
+	TextInput,
+} from "@patternfly/react-core";
 import { ReactNode, useEffect } from "react";
 import { Controller, RegisterOptions, useForm } from "react-hook-form";
 import { Attribute, ATTRIBUTES } from "../api/rekor_api";
+import { ExclamationCircleIcon, HelpIcon } from "@patternfly/react-icons";
+import styles from "@patternfly/react-styles/css/components/Form/form";
 
 export interface FormProps {
 	defaultValues?: FormInputs;
 	isLoading: boolean;
-	onSubmit: (query: FormInputs) => void;
+	onSubmit: (_query: FormInputs) => void;
 }
 
 export interface FormInputs {
@@ -31,21 +37,27 @@ type Rules = Omit<
 interface InputConfig {
 	name: string;
 	helperText?: ReactNode;
+	placeholder?: string;
 	rules: Rules;
+	tooltipText?: ReactNode;
 }
 
 const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 	email: {
 		name: "Email",
+		placeholder: "jdoe@example.com",
 		rules: {
 			pattern: {
 				value: /\S+@\S+\.\S+/,
 				message: "Entered value does not match the email format: 'S+@S+.S+'",
 			},
 		},
+		tooltipText: <>Search by the signer&apos;s email address.</>,
 	},
 	hash: {
 		name: "Hash",
+		placeholder:
+			"sha256:8ceb4ab8127731473a9ec81140cb6849cf8e970cda31baef099df48ba3264441",
 		rules: {
 			pattern: {
 				value: /^(sha256:)?[0-9a-fA-F]{64}$|^(sha1:)?[0-9a-fA-F]{40}$/,
@@ -53,6 +65,7 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 					"Entered value does not match the hash format: '^(sha256:)?[0-9a-fA-F]{64}$|^(sha1:)?[0-9a-fA-F]{40}$'",
 			},
 		},
+		tooltipText: <>Search by the SHA1 or SHA2 hash value.</>,
 	},
 	commitSha: {
 		name: "Commit SHA",
@@ -60,18 +73,19 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 			<>
 				Only compatible with{" "}
 				<a
-					href="https://github.com/sigstore/gitsign"
+					href="https://access.redhat.com/documentation/en-us/red_hat_trusted_artifact_signer/2024-q1/html/deployment_guide/verify_the_trusted_artifact_signer_installation#signing-and-verifying-commits-by-using-gitsign-from-the-command-line-interface_deploy"
 					target="_blank"
 					rel="noopener noreferrer"
 					style={{
 						textDecoration: "underline",
 					}}
 				>
-					sigstore/gitsign
+					gitsign
 				</a>{" "}
 				entries
 			</>
 		),
+		placeholder: "6d78e27dfcf83eaad6ef73c4695d1ddc663f5555",
 		rules: {
 			pattern: {
 				value: /^[0-9a-fA-F]{40}$/,
@@ -79,9 +93,12 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 					"Entered value does not match the commit SHA format: '^[0-9a-fA-F]{40}$'",
 			},
 		},
+		tooltipText: <>Search by the commit hash.</>,
 	},
 	uuid: {
 		name: "Entry UUID",
+		placeholder:
+			"24296fb24b8ad77a71b9c1374e207537bafdd75b4f591dcee10f3f697f150d7cc5d0b725eea641e7",
 		rules: {
 			pattern: {
 				value: /^[0-9a-fA-F]{64}|[0-9a-fA-F]{80}$/,
@@ -89,9 +106,11 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 					"Entered value does not match the entry UUID format: '^[0-9a-fA-F]{64}|[0-9a-fA-F]{80}$'",
 			},
 		},
+		tooltipText: <>Search by the universally unique identifier value.</>,
 	},
 	logIndex: {
 		name: "Log Index",
+		placeholder: "1234567",
 		rules: {
 			min: {
 				value: 0,
@@ -102,6 +121,7 @@ const inputConfigByAttribute: Record<FormInputs["attribute"], InputConfig> = {
 				message: "Entered value must be of type int64",
 			},
 		},
+		tooltipText: <>Search by the log index number.</>,
 	},
 };
 
@@ -144,86 +164,131 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 	);
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<Paper sx={{ p: 2 }}>
-				<Grid
-					container
-					spacing={2}
+		<Form onSubmit={handleSubmit(onSubmit)}>
+			<Flex>
+				<Flex
+					direction={{ default: "column" }}
+					flex={{ default: "flex_3" }}
 				>
-					<Grid
-						item
-						xs={4}
-					>
+					<FlexItem>
 						<Controller
 							name="attribute"
 							control={control}
 							render={({ field }) => (
-								<FormControl
-									fullWidth
-									size="small"
+								<FormGroup
+									label={"Attribute"}
+									fieldId={"rekor-search-attribute"}
+									labelIcon={
+										<Popover
+											bodyContent={
+												inputConfigByAttribute[watchAttribute].tooltipText
+											}
+											position={"right"}
+										>
+											<button
+												type="button"
+												aria-label="More info for attribute field"
+												onClick={e => e.preventDefault()}
+												aria-describedby="attribute-info"
+												className={styles.formGroupLabelHelp}
+											>
+												<HelpIcon />
+											</button>
+										</Popover>
+									}
 								>
-									<InputLabel id="rekor-search-type-label">
-										Attribute
-									</InputLabel>
-									<Select
-										labelId="rekor-search-type-label"
-										id="rekor-search-type"
+									<FormSelect
+										id="rekor-search-attribute"
 										{...field}
 										label="Attribute"
 									>
 										{ATTRIBUTES.map(attribute => (
-											<MenuItem
+											<FormSelectOption
+												label={inputConfigByAttribute[attribute].name}
 												key={attribute}
 												value={attribute}
-											>
-												{inputConfigByAttribute[attribute].name}
-											</MenuItem>
+											/>
 										))}
-									</Select>
-								</FormControl>
+									</FormSelect>
+								</FormGroup>
 							)}
 						/>
-					</Grid>
-					<Grid
-						item
-						xs={8}
-						md={6}
-					>
+					</FlexItem>
+				</Flex>
+				<Flex
+					direction={{ default: "column" }}
+					flex={{ default: "flex_3" }}
+				>
+					<FlexItem>
 						<Controller
 							name="value"
 							control={control}
 							rules={rules}
 							render={({ field, fieldState }) => (
-								<TextField
-									sx={{ width: 1 }}
-									size="small"
-									{...field}
+								<FormGroup
 									label={inputConfigByAttribute[watchAttribute].name}
-									error={!!fieldState.error}
-									helperText={
-										fieldState.error?.message ||
-										inputConfigByAttribute[watchAttribute].helperText
-									}
-								/>
+									labelInfo={inputConfigByAttribute[watchAttribute].helperText}
+									fieldId={`rekor-search-${inputConfigByAttribute[
+										watchAttribute
+									].name.toLowerCase()}`}
+								>
+									<TextInput
+										aria-label={`${inputConfigByAttribute[watchAttribute].name} input field`}
+										{...field}
+										id={`rekor-search-${inputConfigByAttribute[
+											watchAttribute
+										].name.toLowerCase()}`}
+										name={inputConfigByAttribute[watchAttribute].name}
+										label={inputConfigByAttribute[watchAttribute].name}
+										placeholder={
+											inputConfigByAttribute[watchAttribute].placeholder
+										}
+										type={
+											inputConfigByAttribute[watchAttribute].name === "email"
+												? "email"
+												: "text"
+										}
+										validated={fieldState.invalid ? "error" : "default"}
+									/>
+									{fieldState.invalid && (
+										<FormHelperText>
+											<HelperText>
+												<HelperTextItem
+													icon={<ExclamationCircleIcon />}
+													variant={fieldState.invalid ? "error" : "success"}
+												>
+													{fieldState.invalid
+														? fieldState.error?.message
+														: inputConfigByAttribute[watchAttribute].helperText}
+												</HelperTextItem>
+											</HelperText>
+										</FormHelperText>
+									)}
+								</FormGroup>
 							)}
 						/>
-					</Grid>
-					<Grid
-						item
-						xs={12}
-						md={2}
-					>
-						<LoadingButton
-							loading={isLoading}
+					</FlexItem>
+				</Flex>
+				<Flex
+					direction={{ default: "column" }}
+					alignSelf={{ default: "alignSelfFlexStart" }}
+					flex={{ default: "flex_1" }}
+				>
+					<FlexItem style={{ marginTop: "2em" }}>
+						<Button
+							variant="primary"
+							id="search-form-button"
+							isBlock={true}
+							isLoading={isLoading}
 							type="submit"
-							variant="contained"
-							fullWidth
+							spinnerAriaLabel={"Loading"}
+							spinnerAriaLabelledBy={"search-form-button"}
 						>
 							Search
-						</LoadingButton>
-					</Grid>
-				</Grid>
-			</Paper>
-		</form>
+						</Button>
+					</FlexItem>
+				</Flex>
+			</Flex>
+		</Form>
 	);
 }

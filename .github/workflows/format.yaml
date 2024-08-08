@@ -1,7 +1,7 @@
 # Copyright 2022 Chainguard, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
-name: Format
+name: Format  💅
 
 on:
   pull_request:
@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
       - name: Check prettify code
         uses: creyD/prettier_action@v4.3
         with:

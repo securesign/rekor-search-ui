@@ -1,0 +1,11 @@
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+        target: auto
+        threshold: 0.5%
+        base: auto
+
+github_checks:
+  annotations: false

@@ -1,0 +1,90 @@
+name: End-to-End Testing (Cypress)  🚀
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+  schedule:
+    - cron: '0 2 * * FRI'
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+      # Cypress Docker image from https://hub.docker.com/r/cypress
+      # with browsers pre-installed
+    container:
+      image: cypress/browsers:latest
+      options: --user 1001
+    strategy:
+      fail-fast: false # https://github.com/cypress-io/github-action/issues/48
+      matrix:
+        browser: [ chrome, electron, safari, edge, firefox ]
+        env:
+          - name: no-variable
+            NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: ""
+          - name: with-variable
+            NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: "https://rekor.sigstore.dev"
+        node: [18]
+
+    steps:
+      - name: Checkout  🛎
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Next.js App
+        run: npm run build
+        env:
+          NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: ${{ matrix.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN }}
+
+      - name: Install browsers for Cypress
+        run: |
+          if [[ "${{ matrix.browser }}" == "chrome" ]]; then
+            sudo apt-get install -y google-chrome-stable;
+          elif [[ "${{ matrix.browser }}" == "firefox" ]]; then
+            sudo apt-get install -y firefox;
+          fi
+
+      # install npm dependencies, cache them correctly, and run
+      # all Cypress tests
+      - name: Run Cypress E2E Tests on Node v${{ matrix.node }}
+        uses: cypress-io/github-action@v6
+        with:
+          browser: ${{ matrix.browser }}
+          # the entire command will automatically be prefixed with "npm"
+          # and we need the second "npm" to execute "cypress run ..." command line
+          command-prefix: "-H 127.0.0.1 -- npx"
+          parallel: true
+          record: true
+          start: npm start
+          # keep quoted url to be safe against YML parsing surprises
+          wait-on: "http://127.0.0.1:3000"
+        env:
+          NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: ${{ matrix.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Screenshot Artifacts  📸
+        uses: actions/upload-artifact@v4
+        # if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
+
+      - name: Upload Video Artifacts  🎥
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: cypress/videos
+          if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
+

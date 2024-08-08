@@ -1,10 +1,10 @@
-import { Box, Link, Typography } from "@mui/material";
 import { dump } from "js-yaml";
-import NextLink from "next/link";
+import Link from "next/link";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { IntotoV002Schema } from "rekor";
 import { decodex509 } from "../x509/decode";
+import { Panel, Text, TextVariants } from "@patternfly/react-core";
 
 export function IntotoViewer002({ intoto }: { intoto: IntotoV002Schema }) {
 	const signature = intoto.content.envelope?.signatures[0];
@@ -23,18 +23,17 @@ export function IntotoViewer002({ intoto }: { intoto: IntotoV002Schema }) {
 	}
 
 	return (
-		<Box>
-			<Typography
-				variant="h5"
-				sx={{ py: 1 }}
+		<Panel>
+			<Text
+				component={TextVariants.h5}
+				style={{ paddingTop: "1.5em", paddingBottom: "1.5em" }}
 			>
-				<NextLink
+				<Link
 					href={`/?hash=${intoto.content.payloadHash?.algorithm}:${intoto.content.payloadHash?.value}`}
-					passHref
 				>
-					<Link component={"span"}>Hash</Link>
-				</NextLink>
-			</Typography>
+					Hash
+				</Link>
+			</Text>
 
 			<SyntaxHighlighter
 				language="text"
@@ -43,30 +42,30 @@ export function IntotoViewer002({ intoto }: { intoto: IntotoV002Schema }) {
 				{`${intoto.content.payloadHash?.algorithm}:${intoto.content.payloadHash?.value}`}
 			</SyntaxHighlighter>
 
-			<Typography
-				variant="h5"
-				sx={{ py: 1 }}
+			<Text
+				component={TextVariants.h5}
+				style={{ paddingTop: "1.5em", paddingBottom: "1.5em" }}
 			>
 				Signature
-			</Typography>
+			</Text>
 			<SyntaxHighlighter
 				language="text"
 				style={atomDark}
 			>
 				{window.atob(signature?.sig || "")}
 			</SyntaxHighlighter>
-			<Typography
-				variant="h5"
-				sx={{ py: 1 }}
+			<Text
+				component={TextVariants.h5}
+				style={{ paddingTop: "1.5em", paddingBottom: "1.5em" }}
 			>
 				{publicKey.title}
-			</Typography>
+			</Text>
 			<SyntaxHighlighter
 				language="yaml"
 				style={atomDark}
 			>
 				{publicKey.content}
 			</SyntaxHighlighter>
-		</Box>
+		</Panel>
 	);
 }

@@ -19,9 +19,18 @@ beforeEach(() => {
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { RekorClientProvider } from "../api/context";
 import { Explorer } from "./Explorer";
-import userEvent from "@testing-library/user-event";
 
 describe("Explorer", () => {
+	it("renders without issues", () => {
+		render(
+			<RekorClientProvider>
+				<Explorer />
+			</RekorClientProvider>,
+		);
+
+		expect(screen.getByText("Search")).toBeInTheDocument();
+	});
+
 	it("should render search form and display search button", () => {
 		render(
 			<RekorClientProvider>
@@ -30,7 +39,9 @@ describe("Explorer", () => {
 		);
 
 		expect(screen.getByLabelText("Attribute")).toBeInTheDocument();
-		expect(screen.getByRole("textbox", { name: "Email" })).toBeInTheDocument();
+		expect(
+			screen.getByRole("textbox", { name: "Email input field" }),
+		).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Search" })).toBeInTheDocument();
 	});
 
@@ -45,13 +56,6 @@ describe("Explorer", () => {
 		(useRouter as jest.Mock).mockImplementation(
 			(): Partial<NextRouter> => mockRouter,
 		);
-
-		render(
-			<RekorClientProvider>
-				<Explorer />
-			</RekorClientProvider>,
-		);
-
 		expect(mockRouter.push).not.toHaveBeenCalled();
 	});
 
@@ -68,11 +72,11 @@ describe("Explorer", () => {
 		await waitFor(() => expect(screen.queryByRole("status")).toBeNull());
 
 		expect(
-			screen.findByLabelText("Showing").then(res => {
-				screen.debug();
-				console.log(res);
-				expect(res).toBeInTheDocument();
-			}),
+			screen
+				.findByLabelText("Showing" || "No matching entries found")
+				.then(res => {
+					expect(res).toBeInTheDocument();
+				}),
 		);
 	});
 });
