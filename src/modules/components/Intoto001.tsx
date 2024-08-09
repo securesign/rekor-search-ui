@@ -1,14 +1,13 @@
 import { dump } from "js-yaml";
-import Link from "next/link";
+import NextLink from "next/link";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { IntotoV002Schema } from "rekor";
+import { IntotoV001Schema } from "rekor";
 import { decodex509 } from "../x509/decode";
 import { Panel, Text, TextVariants } from "@patternfly/react-core";
 
-export function IntotoViewer({ intoto }: { intoto: IntotoV002Schema }) {
-	const signature = intoto.content.envelope?.signatures[0];
-	const certContent = window.atob(signature?.publicKey || "");
+export function IntotoViewer001({ intoto }: { intoto: IntotoV001Schema }) {
+	const certContent = window.atob(intoto.publicKey || "");
 
 	const publicKey = {
 		title: "Public Key",
@@ -28,11 +27,12 @@ export function IntotoViewer({ intoto }: { intoto: IntotoV002Schema }) {
 				component={TextVariants.h5}
 				style={{ paddingTop: "1.5em", paddingBottom: "1.5em" }}
 			>
-				<Link
+				<NextLink
 					href={`/?hash=${intoto.content.payloadHash?.algorithm}:${intoto.content.payloadHash?.value}`}
+					passHref
 				>
 					Hash
-				</Link>
+				</NextLink>
 			</Text>
 
 			<SyntaxHighlighter
@@ -52,7 +52,7 @@ export function IntotoViewer({ intoto }: { intoto: IntotoV002Schema }) {
 				language="text"
 				style={atomDark}
 			>
-				{window.atob(signature?.sig || "")}
+				{"Missing for intoto v0.0.1 entries"}
 			</SyntaxHighlighter>
 			<Text
 				component={TextVariants.h5}

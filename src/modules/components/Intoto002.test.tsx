@@ -1,12 +1,13 @@
-// @ts-nocheck
 import atobMock from "../../__mocks__/atobMock";
 import decodex509Mock from "../../__mocks__/decodex509Mock";
 
 import { render, screen } from "@testing-library/react";
-import { IntotoViewer } from "./Intoto";
+import { IntotoViewer002 } from "./Intoto002";
 import { IntotoV002Schema } from "rekor";
 
-const pemCertificate = `-----BEGIN CERTIFICATE-----\n${Buffer.from("Mocked Public Key").toString("base64")}\n-----END CERTIFICATE-----`;
+const pemCertificate = `-----BEGIN CERTIFICATE-----\n${Buffer.from(
+	"Mocked Public Key",
+).toString("base64")}\n-----END CERTIFICATE-----`;
 
 jest.mock("../x509/decode", () => ({
 	decodex509: decodex509Mock,
@@ -39,8 +40,8 @@ describe("IntotoViewer", () => {
 		},
 	};
 
-	it.skip("renders the component with payload hash, signature, and certificate", () => {
-		render(<IntotoViewer intoto={mockIntoto} />);
+	it("renders the component with payload hash, signature, and certificate", () => {
+		render(<IntotoViewer002 intoto={mockIntoto} />);
 
 		// verify the hash link is rendered correctly
 		expect(screen.getByText("Hash")).toBeInTheDocument();

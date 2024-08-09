@@ -1,6 +1,12 @@
 jest.mock("next/router");
 jest.mock("react-syntax-highlighter/dist/cjs/styles/prism");
 
+import decodex509Mock from "../../__mocks__/decodex509Mock";
+
+jest.mock("../x509/decode", () => ({
+	decodex509: decodex509Mock,
+}));
+
 import { HashedRekordViewer } from "./HashedRekord";
 import { render, screen } from "@testing-library/react";
 import { HashedRekorV001Schema } from "rekor";
@@ -30,7 +36,7 @@ describe("HashedRekordViewer", () => {
 		expect(screen.getByText("mockedPublicKeyContent")).toBeInTheDocument();
 	});
 
-	it.skip("renders the component with a public key certificate", () => {
+	it("renders the component with a public key certificate", () => {
 		const mockedRekordWithCert = {
 			// simulate a certificate
 			data: {},
@@ -45,7 +51,10 @@ describe("HashedRekordViewer", () => {
 
 		render(<HashedRekordViewer hashedRekord={mockedRekordWithCert} />);
 
-		// verify that the decoded certificate content is displayed
-		expect(screen.getByText(/Decoded:/)).toBeInTheDocument();
+		expect(
+			screen.getByText(
+				/'-----BEGIN CERTIFICATE-----Mocked Certificate-----END CERTIFICATE-----'/,
+			),
+		).toBeInTheDocument();
 	});
 });

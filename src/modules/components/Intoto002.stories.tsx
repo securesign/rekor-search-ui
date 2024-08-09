@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { IntotoViewer } from "./Intoto";
+import { IntotoViewer002 } from "./Intoto002";
 
-const meta: Meta<typeof IntotoViewer> = {
-	title: "Components/Intoto",
-	component: IntotoViewer,
+const meta: Meta<typeof IntotoViewer002> = {
+	title: "Components/Intoto002",
+	component: IntotoViewer002,
 	tags: ["autodocs"],
 };
 
 export default meta;
-type Story = StoryObj<typeof IntotoViewer>;
+type Story = StoryObj<typeof IntotoViewer002>;
 
 export const Default: Story = {
 	args: {

@@ -1,29 +1,34 @@
 const nextJest = require("next/jest");
 
 const createJestConfig = nextJest({
-	// Provide the path to your Next.js app to load next.config.js and .env files in your test environment
+	// provide the path to your Next.js app to load next.config.js and .env files in your test environment
 	dir: "./",
 });
 
-// Add any custom config to be passed to Jest
 /** @type {import('jest').Config} */
 const config = {
-	// Automatically clear mock calls and instances between every test
+	// automatically clear mock calls and instances between every test
 	clearMocks: true,
 
-	// Indicates whether the coverage information should be collected while executing the test
+	// whether the coverage information should be collected while executing the test
 	collectCoverage: true,
 
-	// The directory where Jest should output its coverage files
+	// directory where Jest should output its coverage files
 	coverageDirectory: "coverage",
 	coverageProvider: "v8",
 
+	globals: {
+		"ts-jest": {
+			tsconfig: "<rootDir>/tsconfig.test.json",
+		},
+	},
+
 	moduleNameMapper: {
-		// Handle module aliases
+		// handle module aliases
 		"^@/components/(.*)$": "<rootDir>/components/$1",
 	},
 
-	// Add more setup options before each test is run
+	// add more setup options before each test is run
 	setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
 
 	testEnvironment: "jest-environment-jsdom",
