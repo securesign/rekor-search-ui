@@ -238,6 +238,7 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 										id={`rekor-search-${inputConfigByAttribute[
 											watchAttribute
 										].name.toLowerCase()}`}
+										name={inputConfigByAttribute[watchAttribute].name}
 										label={inputConfigByAttribute[watchAttribute].name}
 										placeholder={
 											inputConfigByAttribute[watchAttribute].placeholder

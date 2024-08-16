@@ -4,6 +4,23 @@ import { RekorClientProvider } from "../api/context";
 import userEvent from "@testing-library/user-event";
 
 describe("SearchForm", () => {
+	it("should render form with default values", () => {
+		render(
+			<RekorClientProvider>
+				<SearchForm
+					defaultValues={{ attribute: "email", value: "" }}
+					isLoading={false}
+					onSubmit={jest.fn()}
+				/>
+			</RekorClientProvider>,
+		);
+
+		expect(screen.getByLabelText("Attribute")).toBeInTheDocument();
+		expect(screen.getByRole("textbox", { name: /email/i })).toBeInTheDocument();
+		expect(screen.getByRole("textbox", { name: /email/i })).toHaveValue("");
+		expect(screen.getByRole("button", { name: "Search" })).toBeInTheDocument();
+	});
+
 	it("submits the correct form data", async () => {
 		const mockOnSubmit = jest.fn();
 		render(
