@@ -13,6 +13,9 @@ import { HashedRekorV001Schema } from "rekor";
 
 describe("HashedRekordViewer", () => {
 	it("renders the component with a public key", () => {
+		// mock decodex509 to return an empty object
+		decodex509Mock.mockReturnValueOnce({});
+
 		const mockedRekord: HashedRekorV001Schema = {
 			data: {
 				hash: {
@@ -37,8 +40,14 @@ describe("HashedRekordViewer", () => {
 	});
 
 	it("renders the component with a public key certificate", () => {
+		// mock decodex509 to return a mocked certificate
+		decodex509Mock.mockReturnValueOnce({
+			publicKey:
+				"-----BEGIN CERTIFICATE-----Mocked Certificate-----END CERTIFICATE-----",
+			subject: "Mocked Subject",
+		});
+
 		const mockedRekordWithCert = {
-			// simulate a certificate
 			data: {},
 			signature: {
 				publicKey: {
@@ -53,7 +62,7 @@ describe("HashedRekordViewer", () => {
 
 		expect(
 			screen.getByText(
-				/'-----BEGIN CERTIFICATE-----Mocked Certificate-----END CERTIFICATE-----'/,
+				/-----BEGIN CERTIFICATE-----Mocked Certificate-----END CERTIFICATE-----/,
 			),
 		).toBeInTheDocument();
 	});
