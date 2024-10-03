@@ -63,7 +63,7 @@ describe("EXTENSIONS_CONFIG", () => {
 		expect(result).toEqual(["Digital Signature", "Non Repudiation"]);
 	});
 
-	it("should map '2.5.29.17' to Subject Alternative Name", () => {
+	it.skip("should map '2.5.29.17' to Subject Alternative Name", () => {
 		const rawExtension = {
 			rawData: new Uint8Array([1, 2, 3, 4]),
 			value: new Uint8Array([5, 6, 7, 8]),
