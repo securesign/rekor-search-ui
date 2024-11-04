@@ -24,8 +24,6 @@ spec:
     value: quay.io/securesign/rekor-search-ui:{{revision}}
   - name: dockerfile
     value: Dockerfile
-  - name: build-source-image
-    value: "true"
   - name: prefetch-input
     value: '{"type": "npm", "path":"."}'
   - name: hermetic
