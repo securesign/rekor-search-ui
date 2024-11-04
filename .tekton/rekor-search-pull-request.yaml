@@ -27,8 +27,8 @@ spec:
     value: 5d
   - name: dockerfile
     value: Dockerfile
-  - name: build-source-image
-    value: "true"
+  # - name: build-source-image
+  #   value: "true"
   - name: prefetch-input
     value: '{"type": "npm", "path":"."}'
   - name: hermetic
@@ -112,10 +112,10 @@ spec:
     - default: ""
       description: Image tag expiration time, time values could be something like 1h, 2d, 3w for hours, days, and weeks, respectively.
       name: image-expires-after
-    - default: "false"
-      description: Build a source image.
-      name: build-source-image
-      type: string
+    # - default: "false"
+    #   description: Build a source image.
+    #   name: build-source-image
+    #   type: string
     - default: []
       description: Array of --build-arg values ("arg=value" strings) for buildah
       name: build-args
@@ -250,33 +250,33 @@ spec:
       workspaces:
       - name: source
         workspace: workspace
-    - name: build-source-image
-      params:
-      - name: BINARY_IMAGE
-        value: $(params.output-image)
-      runAfter:
-      - build-container
-      taskRef:
-        params:
-        - name: name
-          value: source-build
-        - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-source-build:0.1@sha256:21cb5ebaff7a9216903cf78933dc4ec4dd6283a52636b16590a5f52ceb278269
-        - name: kind
-          value: task
-        resolver: bundles
-      when:
-      - input: $(tasks.init.results.build)
-        operator: in
-        values:
-        - "true"
-      - input: $(params.build-source-image)
-        operator: in
-        values:
-        - "true"
-      workspaces:
-      - name: workspace
-        workspace: workspace
+    # - name: build-source-image
+    #   params:
+    #   - name: BINARY_IMAGE
+    #     value: $(params.output-image)
+    #   runAfter:
+    #   - build-container
+    #   taskRef:
+    #     params:
+    #     - name: name
+    #       value: source-build
+    #     - name: bundle
+    #       value: quay.io/konflux-ci/tekton-catalog/task-source-build:0.1@sha256:21cb5ebaff7a9216903cf78933dc4ec4dd6283a52636b16590a5f52ceb278269
+    #     - name: kind
+    #       value: task
+    #     resolver: bundles
+    #   when:
+    #   - input: $(tasks.init.results.build)
+    #     operator: in
+    #     values:
+    #     - "true"
+    #   - input: $(params.build-source-image)
+    #     operator: in
+    #     values:
+    #     - "true"
+    #   workspaces:
+    #   - name: workspace
+    #     workspace: workspace
     - name: deprecated-base-image-check
       params:
       - name: IMAGE_URL
