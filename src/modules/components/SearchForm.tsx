@@ -159,6 +159,7 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
 			},
 			pattern: undefined,
 			min: undefined,
+			deps: undefined,
 		},
 		inputConfigByAttribute[watchAttribute].rules,
 	);
