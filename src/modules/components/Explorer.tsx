@@ -68,11 +68,10 @@ function RekorList({
 		newPage: number,
 	) => void;
 
- }) {
+}) {
 	if (!rekorEntries) {
 		return <Fragment></Fragment>;
 	}
-
 
 	if (rekorEntries.entries.length === 0) {
 		return (
@@ -229,7 +228,7 @@ export function Explorer() {
 			) : loading ? (
 				<LoadingIndicator />
 			) : (
-				<RekorList 
+				<RekorList
 					rekorEntries={data}
 					page={page}
 					onSetPage={onSetPage}
