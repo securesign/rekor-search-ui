@@ -56,18 +56,17 @@ function Error({ error }: { error: unknown }) {
 	);
 }
 
-function RekorList({ 
-	rekorEntries, 
-	page, 
+function RekorList({
+	rekorEntries,
+	page,
 	onSetPage,
-}: { 
+}: {
 	rekorEntries?: RekorEntries;
 	page: number;
 	onSetPage: (
-		event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
-		newPage: number,
+		_event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
+		_newPage: number,
 	) => void;
-
 }) {
 	if (!rekorEntries) {
 		return <Fragment></Fragment>;
@@ -101,14 +100,15 @@ function RekorList({
 			))}
 
 			{pageCount > 1 && (
-					<Pagination
-						itemCount={pageCount}
-						perPage={PAGE_SIZE}
-						page={page}
-						onSetPage={onSetPage}
-						variant="bottom"
-						style={{ marginTop: "1em" }}
-					/>
+				<Pagination
+					itemCount={rekorEntries.totalCount}
+					perPage={PAGE_SIZE}
+					page={page}
+					onSetPage={onSetPage}
+					perPageOptions={[]}
+					variant="bottom"
+					style={{ marginTop: "1em" }}
+				/>
 			)}
 		</div>
 	);
