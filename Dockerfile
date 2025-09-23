@@ -19,8 +19,8 @@ EXPOSE 3000
 
 LABEL \
     com.redhat.component="trusted-artifact-signer-rekor-ui" \
-    name="trusted-artifact-signer-rekor-ui" \
-    version="0.0.1" \
+    name="rhtas/rekor-search-ui-rhel9" \
+    version="1.3.0" \
     summary="User Interface for checking Rekor Entries" \
     description="Provides a user interface for checking Rekor Entries through a Node App" \
     io.k8s.description="Provides a user interface for checking Rekor Entries through a Node App" \
