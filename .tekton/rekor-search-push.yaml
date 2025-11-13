@@ -31,6 +31,8 @@ spec:
     value: '{"type": "npm", "path":"."}'
   - name: hermetic
     value: "true"
+  - name: fips-check
+    value: "true"
   pipelineRef:
     params:
     - name: url
