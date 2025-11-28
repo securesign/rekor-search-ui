@@ -22,7 +22,7 @@
 	"dependencies": {
 		"@patternfly/patternfly": "^5.4.2",
 		"@patternfly/react-core": "^5.4.14",
-		"@peculiar/x509": "1.8.4",
+		"@peculiar/x509": "1.12.4",
 		"js-yaml": "^4.1.0",
 		"moment": "^2.29.3",
 		"next": "^14.2.29",
