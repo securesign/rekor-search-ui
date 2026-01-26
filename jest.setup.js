@@ -8,4 +8,27 @@ jest.mock("next/config", () => () => ({
 	},
 }));
 
+// Mock react-syntax-highlighter to avoid ESM issues in Jest (v16.x is ESM-only)
+jest.mock("react-syntax-highlighter", () => {
+	const React = require("react");
+	return {
+		Prism: ({ children }) =>
+			React.createElement(
+				"pre",
+				{ "data-testid": "syntax-highlighter" },
+				children,
+			),
+		Light: ({ children }) =>
+			React.createElement(
+				"pre",
+				{ "data-testid": "syntax-highlighter" },
+				children,
+			),
+	};
+});
+
+jest.mock("react-syntax-highlighter/dist/cjs/styles/prism", () => ({
+	atomDark: {},
+}));
+
 Object.assign(global, { TextDecoder, TextEncoder });

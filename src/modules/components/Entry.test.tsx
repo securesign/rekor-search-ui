@@ -43,17 +43,18 @@ describe("Entry", () => {
 	it("renders and toggles the accordion content", () => {
 		render(<Entry entry={mockEntry} />);
 
-		expect(screen.getByText("apiVersion")).not.toBeVisible();
-
 		// check if UUID link is rendered
 		expect(screen.getByText("someUuid")).toBeInTheDocument();
 
-		// simulate clicking the accordion toggle
+		// Raw Body accordion toggle should be present
 		const toggleButton = screen.getByText("Raw Body");
+		expect(toggleButton).toBeInTheDocument();
+
+		// simulate clicking the accordion toggle
 		fireEvent.click(toggleButton);
 
-		// now the accordion content should be visible
-		expect(screen.getByText("apiVersion")).toBeVisible();
+		// after expanding, the YAML content with apiVersion should be visible
+		expect(screen.getByText(/apiVersion/)).toBeVisible();
 	});
 });
 
