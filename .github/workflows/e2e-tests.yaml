@@ -27,7 +27,7 @@ jobs:
             NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: ""
           - name: with-variable
             NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: "https://rekor.sigstore.dev"
-        node: [18]
+        node: [20]
 
     steps:
       - name: Checkout  🛎
