@@ -59,6 +59,7 @@
 	},
 	"overrides": {
 		"cross-spawn": "~7.0.6",
-		"prismjs": "^1.30.0"
+		"prismjs": "^1.30.0",
+		"lodash": "^4.17.23"
 	}
 }
