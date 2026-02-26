@@ -1,5 +1,5 @@
 # Builder Stage
-FROM registry.access.redhat.com/ubi9/nodejs-20@sha256:38effdf9457f36a71c8b78ce6885810b86ad5f5fbf22dbea0982c54ef09ebf80 as builder
+FROM registry.redhat.io/rhel8/nodejs-20-minimal@sha256:8c9878efef6ac20718e776d89338675882847763fcec7558f053d34df4f57d0f as builder
 USER root
 
 COPY package.json package-lock.json ./
