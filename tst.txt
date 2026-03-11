@@ -1,0 +1,117 @@
+rekor-search-ui@0.1.0 /home/tommy/projects/rekor-search-ui
+├── @babel/core@7.23.7
+├── @emotion/babel-plugin@11.11.0 extraneous
+├── @emotion/cache@11.11.0 extraneous
+├── @emotion/hash@0.9.1 extraneous
+├── @emotion/is-prop-valid@1.2.1 extraneous
+├── @emotion/memoize@0.8.1 extraneous
+├── @emotion/react@11.11.3 extraneous
+├── @emotion/serialize@1.1.3 extraneous
+├── @emotion/sheet@1.2.2 extraneous
+├── @emotion/styled@11.11.0 extraneous
+├── @emotion/unitless@0.8.1 extraneous
+├── @emotion/use-insertion-effect-with-fallbacks@1.0.1 extraneous
+├── @emotion/utils@1.2.1 extraneous
+├── @emotion/weak-memoize@0.3.1 extraneous
+├── @floating-ui/core@1.5.2 extraneous
+├── @floating-ui/dom@1.5.3 extraneous
+├── @floating-ui/react-dom@2.0.4 extraneous
+├── @floating-ui/utils@0.1.6 extraneous
+├── @mui/base@5.0.0-alpha.112 extraneous
+├── @mui/core-downloads-tracker@5.15.3 extraneous
+├── @mui/icons-material@5.15.3 extraneous
+├── @mui/lab@5.0.0-alpha.114 extraneous
+├── @mui/material@5.15.3 extraneous
+├── @mui/private-theming@5.15.3 extraneous
+├── @mui/styled-engine@5.15.3 extraneous
+├── @mui/system@5.15.3 extraneous
+├── @mui/types@7.2.12 extraneous
+├── @mui/utils@5.15.3 extraneous
+├── UNMET DEPENDENCY @patternfly/patternfly@^5.4.2
+├── UNMET DEPENDENCY @patternfly/react-core@^5.4.14
+├── @peculiar/x509@1.8.4
+├── @popperjs/core@2.11.8 extraneous
+├── UNMET DEPENDENCY @testing-library/jest-dom@^6.4.2
+├── UNMET DEPENDENCY @testing-library/react@^16.0.0
+├── UNMET DEPENDENCY @testing-library/user-event@^14.5.2
+├── UNMET DEPENDENCY @types/jest@^29.5.12
+├── @types/js-yaml@4.0.9
+├── @types/node@18.19.4
+├── @types/parse-json@4.0.2 extraneous
+├── @types/react-syntax-highlighter@15.5.11
+├── @types/react-transition-group@4.4.10 extraneous
+├── @types/react@18.0.9 invalid: "18.3.21" from the root project
+├── babel-plugin-macros@3.1.0 extraneous
+├── base64-js@1.5.1 extraneous
+├── bl@4.1.0 extraneous
+├── buffer@5.7.1 extraneous
+├── caniuse-lite@1.0.30001574
+├── chownr@1.1.4 extraneous
+├── clsx@1.2.1 extraneous
+├── color-string@1.9.1 extraneous
+├── color@4.2.3 extraneous
+├── cosmiconfig@7.1.0 extraneous
+├── UNMET DEPENDENCY cypress@^13.8.1
+├── decompress-response@6.0.0 extraneous
+├── deep-extend@0.6.0 extraneous
+├── detect-libc@2.0.2 extraneous
+├── dom-helpers@5.2.1 extraneous
+├── end-of-stream@1.4.4 extraneous
+├── error-ex@1.3.2 extraneous
+├── eslint-config-next@13.0.0 invalid: "13.5.11" from the root project
+├── UNMET DEPENDENCY eslint-config-prettier@9.1.0
+├── UNMET DEPENDENCY eslint-plugin-cypress@^3.0.3
+├── UNMET DEPENDENCY eslint-plugin-testing-library@^6.2.0
+├── eslint@8.10.0 invalid: "8.57.1" from the root project
+├── expand-template@2.0.3 extraneous
+├── find-root@1.1.0 extraneous
+├── fs-constants@1.0.0 extraneous
+├── github-from-package@0.0.0 extraneous
+├── hoist-non-react-statics@3.3.2 extraneous
+├── UNMET DEPENDENCY husky@^9.0.11
+├── ieee754@1.2.1 extraneous
+├── ini@1.3.8 extraneous
+├── is-arrayish@0.2.1 extraneous
+├── UNMET DEPENDENCY jest-environment-jsdom@^29.7.0
+├── UNMET DEPENDENCY jest@^29.7.0
+├── js-yaml@4.1.0
+├── json-parse-even-better-errors@2.3.1 extraneous
+├── libvips@0.0.2 extraneous
+├── lines-and-columns@1.2.4 extraneous
+├── mimic-response@3.1.0 extraneous
+├── mkdirp-classic@0.5.3 extraneous
+├── moment@2.30.1
+├── napi-build-utils@1.0.2 extraneous
+├── next@13.5.6 invalid: "^14.2.29" from the root project
+├── node-abi@3.52.0 extraneous
+├── node-addon-api@5.1.0 extraneous
+├── parse-json@5.2.0 extraneous
+├── prebuild-install@7.1.1 extraneous
+├── prettier@3.1.1 invalid: "3.2.5" from the root project
+├── pump@3.0.0 extraneous
+├── pvtsutils@1.3.5 invalid: "^1.3.6" from the root project
+├── rc@1.2.8 extraneous
+├── react-dom@18.2.0 invalid: "^18.3.1" from the root project
+├── react-error-boundary@3.1.4
+├── react-hook-form@7.49.2 invalid: "^7.56.0" from the root project
+├── react-is@18.2.0 extraneous
+├── react-syntax-highlighter@15.5.0 invalid: "^15.6.1" from the root project
+├── react-transition-group@4.4.5 extraneous
+├── react@18.2.0 invalid: "^18.3.1" from the root project
+├── readable-stream@3.6.2 extraneous
+├── rekor@0.2.0
+├── safe-buffer@5.2.1 extraneous
+├── sharp@0.30.7 extraneous
+├── simple-concat@1.0.1 extraneous
+├── simple-get@4.0.1 extraneous
+├── simple-swizzle@0.2.2 extraneous
+├── source-map@0.5.7 extraneous
+├── string_decoder@1.3.0 extraneous
+├── stylis@4.2.0 extraneous
+├── tar-fs@2.1.1 extraneous
+├── tar-stream@2.2.0 extraneous
+├── tunnel-agent@0.6.0 extraneous
+├── typescript@4.6.2 invalid: "^4.9.5" from the root project
+├── util-deprecate@1.0.2 extraneous
+└── yaml@1.10.2 extraneous
+
