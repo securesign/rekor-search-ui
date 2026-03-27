@@ -1,5 +1,5 @@
 # Builder Stage
-FROM registry.access.redhat.com/ubi9/nodejs-20@sha256:d5ed213fe155baab8f00520e205aa2b59b77d81b0281c8d417515455f5c611dc as builder
+FROM registry.redhat.io/rhel8/nodejs-20-minimal@sha256:c70bc9908652bf9f95fce435e98be70a6dcf675ff7b6677aba7a08009c368926 as builder
 USER root
 
 COPY package.json package-lock.json ./
@@ -13,14 +13,14 @@ COPY . .
 RUN npm run build
 
 # Production Stage
-FROM registry.access.redhat.com/ubi9/nodejs-20@sha256:d5ed213fe155baab8f00520e205aa2b59b77d81b0281c8d417515455f5c611dc as production
+FROM registry.redhat.io/rhel8/nodejs-20-minimal@sha256:c70bc9908652bf9f95fce435e98be70a6dcf675ff7b6677aba7a08009c368926 as production
 USER 1001
 EXPOSE 3000
 
 LABEL \
     com.redhat.component="trusted-artifact-signer-rekor-ui" \
-    name="trusted-artifact-signer-rekor-ui" \
-    version="0.0.1" \
+    name="rhtas/rekor-search-ui-rhel9" \
+    version="1.3.0" \
     summary="User Interface for checking Rekor Entries" \
     description="Provides a user interface for checking Rekor Entries through a Node App" \
     io.k8s.description="Provides a user interface for checking Rekor Entries through a Node App" \

@@ -16,7 +16,10 @@ import {
 	Spinner,
 	Text,
 	TextVariants,
+	Pagination,
 } from "@patternfly/react-core";
+
+const PAGE_SIZE = 20;
 
 function isApiError(error: unknown): error is ApiError {
 	return !!error && typeof error === "object" && Object.hasOwn(error, "body");
@@ -53,7 +56,18 @@ function Error({ error }: { error: unknown }) {
 	);
 }
 
-function RekorList({ rekorEntries }: { rekorEntries?: RekorEntries }) {
+function RekorList({
+	rekorEntries,
+	page,
+	onSetPage,
+}: {
+	rekorEntries?: RekorEntries;
+	page: number;
+	onSetPage: (
+		_event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
+		_newPage: number,
+	) => void;
+}) {
 	if (!rekorEntries) {
 		return <Fragment></Fragment>;
 	}
@@ -67,10 +81,15 @@ function RekorList({ rekorEntries }: { rekorEntries?: RekorEntries }) {
 		);
 	}
 
+	const pageCount = Math.ceil(rekorEntries.totalCount / PAGE_SIZE);
+
+	const firstItem = (page - 1) * PAGE_SIZE + 1;
+	const lastItem = firstItem + rekorEntries.entries.length - 1;
+
 	return (
 		<div style={{ margin: "2em auto" }}>
 			<Text component={TextVariants.p}>
-				Showing {rekorEntries.entries.length} of {rekorEntries?.totalCount}
+				Showing {firstItem} - {lastItem} of {rekorEntries.totalCount}
 			</Text>
 
 			{rekorEntries.entries.map(entry => (
@@ -79,6 +98,18 @@ function RekorList({ rekorEntries }: { rekorEntries?: RekorEntries }) {
 					entry={entry}
 				/>
 			))}
+
+			{pageCount > 1 && (
+				<Pagination
+					itemCount={rekorEntries.totalCount}
+					perPage={PAGE_SIZE}
+					page={page}
+					onSetPage={onSetPage}
+					perPageOptions={[]}
+					variant="bottom"
+					style={{ marginTop: "1em" }}
+				/>
+			)}
 		</div>
 	);
 }
@@ -104,6 +135,7 @@ export function Explorer() {
 	const [data, setData] = useState<RekorEntries>();
 	const [error, setError] = useState<unknown>();
 	const [loading, setLoading] = useState(false);
+	const [page, setPage] = useState(1);
 
 	useEffect(() => {
 		async function fetch() {
@@ -113,17 +145,19 @@ export function Explorer() {
 			setError(undefined);
 			setLoading(true);
 			try {
-				setData(await search(query));
+				setData(await search(query, page));
 			} catch (e) {
 				setError(e);
 			}
 			setLoading(false);
 		}
 		fetch();
-	}, [query, search]);
+	}, [query, page, search]);
 
 	const setQueryParams = useCallback(
 		(formInputs: FormInputs) => {
+			setPage(1);
+
 			router.push(
 				{
 					pathname: router.pathname,
@@ -152,6 +186,8 @@ export function Explorer() {
 
 	useEffect(() => {
 		if (formInputs) {
+			setPage(1);
+
 			switch (formInputs.attribute) {
 				case "logIndex":
 					const query = parseInt(formInputs.value);
@@ -172,6 +208,13 @@ export function Explorer() {
 		}
 	}, [formInputs]);
 
+	const onSetPage = (
+		_event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
+		newPage: number,
+	) => {
+		setPage(newPage);
+	};
+
 	return (
 		<Fragment>
 			<SearchForm
@@ -185,7 +228,11 @@ export function Explorer() {
 			) : loading ? (
 				<LoadingIndicator />
 			) : (
-				<RekorList rekorEntries={data} />
+				<RekorList
+					rekorEntries={data}
+					page={page}
+					onSetPage={onSetPage}
+				/>
 			)}
 		</Fragment>
 	);
