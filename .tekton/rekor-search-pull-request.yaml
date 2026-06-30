@@ -46,7 +46,7 @@ spec:
       value: pipelines/docker-build-oci-ta.yaml
     resolver: git
   taskRunTemplate:
-    serviceAccountName: build-pipeline-rekor-search-v1-2
+    serviceAccountName: build-pipeline-rekor-search-v1-3
   workspaces:
   - name: workspace
     volumeClaimTemplate:
