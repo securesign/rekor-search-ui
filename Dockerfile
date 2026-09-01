@@ -1,5 +1,5 @@
 # Builder Stage
-FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:cfe2a61c9b74e6880fbb23a64c7e9b55e4138a8180ad4ffa3587d8452d6b839e as builder
+FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:ec0fcd4a3b6c64a1b9b1571c9528172508471f8a295f857215057a140aa5f2b4 as builder
 USER root
 
 COPY package.json package-lock.json ./
@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 # Production Stage
-FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:cfe2a61c9b74e6880fbb23a64c7e9b55e4138a8180ad4ffa3587d8452d6b839e as production
+FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:ec0fcd4a3b6c64a1b9b1571c9528172508471f8a295f857215057a140aa5f2b4 as production
 USER 1001
 EXPOSE 3000
 
