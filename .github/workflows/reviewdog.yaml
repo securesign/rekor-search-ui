@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+      - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
         with:
           node-version: 18
-      - uses: reviewdog/action-eslint@v1
+      - uses: reviewdog/action-eslint@556a3fdaf8b4201d4d74d406013386aa4f7dab96 # v1.34.0
         with:
           reporter: github-check
           eslint_flags: "src/ --ignore-pattern '**/*.stories.{js,jsx,ts,tsx}' --ignore-pattern '**/*.mdx'"
@@ -27,14 +27,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
       - name: Find yamls
         id: get_yamls
         run: |
           yamls=$(find .github -name "*.y*ml" | grep -v dependabot.)
           echo "::set-output name=files::${yamls}"
       - name: Action lint
-        uses: reviewdog/action-actionlint@v1
+        uses: reviewdog/action-actionlint@d290e336d5a743810aef4404f757dc862276d2ae # v1.73.4
         with:
           actionlint_flags: ${{ steps.get_yamls.outputs.files }}
 
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
       - uses: chainguard-dev/actions/trailing-space@main
       - uses: chainguard-dev/actions/eof-newline@main
 
@@ -52,5 +52,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
       - uses: chainguard-dev/actions/donotsubmit@main

@@ -12,13 +12,13 @@ jobs:
     name: 🧪 Unit Tests (Jest)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
       - name: 📦 Install modules
         run: npm install
       - name: ⚙️ Run tests
         run: npm run test --coverage
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
+        uses: codecov/codecov-action@e0b68c6749509c5f83f984dd99a76a1c1a231044 # v4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: securesign/rekor-search-ui
