@@ -20,3 +20,4 @@ jobs:
         with:
           dry: true
           prettier_options: --check .
+          prettier_version: 3.9.6
