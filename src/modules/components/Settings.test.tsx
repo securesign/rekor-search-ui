@@ -2,12 +2,6 @@ jest.mock("../api/context", () => ({
 	useRekorBaseUrl: jest.fn(),
 }));
 
-jest.mock("next/config", () => () => ({
-	publicRuntimeConfig: {
-		NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: "https://default.rekor.domain",
-	},
-}));
-
 import { render, screen } from "@testing-library/react";
 import { Settings } from "./Settings";
 import { useRekorBaseUrl } from "../api/context";
