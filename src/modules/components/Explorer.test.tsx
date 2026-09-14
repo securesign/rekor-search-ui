@@ -7,13 +7,11 @@ jest.mock("next/router", () => ({
 beforeEach(() => {
 	jest.resetAllMocks();
 
-	(useRouter as jest.Mock).mockImplementation(
-		(): Partial<NextRouter> => ({
-			query: {},
-			pathname: "/",
-			asPath: "/",
-		}),
-	);
+	(useRouter as jest.Mock).mockImplementation((): Partial<NextRouter> => ({
+		query: {},
+		pathname: "/",
+		asPath: "/",
+	}));
 });
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
