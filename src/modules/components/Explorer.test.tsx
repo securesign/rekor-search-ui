@@ -70,11 +70,9 @@ describe("Explorer", () => {
 		await waitFor(() => expect(screen.queryByRole("status")).toBeNull());
 
 		expect(
-			screen
-				.findByLabelText("Showing" || "No matching entries found")
-				.then(res => {
-					expect(res).toBeInTheDocument();
-				}),
+			screen.findByLabelText(/Showing|No matching entries found/).then(res => {
+				expect(res).toBeInTheDocument();
+			}),
 		);
 	});
 });

@@ -22,7 +22,7 @@ import { CogIcon } from "@patternfly/react-icons";
 import Link from "next/link";
 import Image from "next/image";
 import NOSSRWrapper from "../modules/utils/noSSR";
-import logo from "/public/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg";
+import logo from "../../public/Logo-Red_Hat-Trusted_Artifact_Signer-A-Reverse-RGB.svg";
 
 interface HomeProps {
 	NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN?: string;
