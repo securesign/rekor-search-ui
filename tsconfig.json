@@ -12,7 +12,7 @@
 		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
-		"jsx": "preserve",
+		"jsx": "react-jsx",
 		"incremental": true,
 		"noImplicitAny": true,
 		"noImplicitThis": true,
@@ -26,5 +26,13 @@
 		".next/types/**/*.ts",
 		"jest.setup.js"
 	],
-	"exclude": ["coverage", "cypress", "cypress.config.ts", "node_modules"]
+	"exclude": [
+		"coverage",
+		"cypress",
+		"cypress.config.ts",
+		"node_modules",
+		"src/__mocks__",
+		"**/*.test.ts",
+		"**/*.test.tsx"
+	]
 }
