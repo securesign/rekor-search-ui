@@ -59,6 +59,7 @@
 	},
 	"overrides": {
 		"cross-spawn": "~7.0.6",
-		"lodash": "^4.18.0"
+		"lodash": "^4.18.0",
+		"postcss": "~8.5.19"
 	}
 }
