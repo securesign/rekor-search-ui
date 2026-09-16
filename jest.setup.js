@@ -2,10 +2,6 @@
 import "@testing-library/jest-dom";
 import { TextEncoder, TextDecoder } from "util";
 
-jest.mock("next/config", () => () => ({
-	publicRuntimeConfig: {
-		NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN: "https://rekor.sigstore.dev",
-	},
-}));
+process.env.NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN = "https://rekor.sigstore.dev";
 
 Object.assign(global, { TextDecoder, TextEncoder });

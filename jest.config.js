@@ -26,6 +26,8 @@ const config = {
 	moduleNameMapper: {
 		// handle module aliases
 		"^@/components/(.*)$": "<rootDir>/components/$1",
+		"^react-syntax-highlighter$":
+			"<rootDir>/src/__mocks__/reactSyntaxHighlighter.tsx",
 	},
 
 	// add more setup options before each test is run
