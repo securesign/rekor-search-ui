@@ -43,7 +43,15 @@ describe("Entry", () => {
 	it("renders and toggles the accordion content", () => {
 		render(<Entry entry={mockEntry} />);
 
-		expect(screen.getByText("apiVersion")).not.toBeVisible();
+		// the highlighter mock renders code verbatim, so match the code block
+		// containing the dumped body rather than a single tokenized span
+		const rawBody = () =>
+			screen.getByText(
+				(_, el) =>
+					el?.tagName === "PRE" && /apiVersion/.test(el.textContent ?? ""),
+			);
+
+		expect(rawBody()).not.toBeVisible();
 
 		// check if UUID link is rendered
 		expect(screen.getByText("someUuid")).toBeInTheDocument();
@@ -53,7 +61,7 @@ describe("Entry", () => {
 		fireEvent.click(toggleButton);
 
 		// now the accordion content should be visible
-		expect(screen.getByText("apiVersion")).toBeVisible();
+		expect(rawBody()).toBeVisible();
 	});
 });
 
