@@ -26,6 +26,10 @@ const config = {
 	moduleNameMapper: {
 		// handle module aliases
 		"^@/components/(.*)$": "<rootDir>/components/$1",
+		// react-syntax-highlighter v16 main entry pulls ESM-only refractor deps
+		// that next/jest cannot transform; stub it (highlighting not under test).
+		"^react-syntax-highlighter$":
+			"<rootDir>/src/__mocks__/reactSyntaxHighlighter.tsx",
 	},
 
 	// add more setup options before each test is run
