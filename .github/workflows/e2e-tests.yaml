@@ -57,7 +57,7 @@ jobs:
       # install npm dependencies, cache them correctly, and run
       # all Cypress tests
       - name: Run Cypress E2E Tests on Node v${{ matrix.node }}
-        uses: cypress-io/github-action@f790eee7a50d9505912f50c2095510be7de06aa7 # v6.10.9
+        uses: cypress-io/github-action@4ce68f262a3888d22cf3175d62010a145ba737ee # v7.4.8
         with:
           browser: ${{ matrix.browser }}
           # the entire command will automatically be prefixed with "npm"
