@@ -25,14 +25,15 @@
 		"@peculiar/x509": "1.8.4",
 		"js-yaml": "^4.3.0",
 		"moment": "^2.29.3",
-		"next": "15.5.19",
+		"next": "15.5.25",
 		"pvtsutils": "^1.3.6",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-error-boundary": "^3.1.4",
 		"react-hook-form": "^7.56.0",
 		"react-syntax-highlighter": "^15.6.1",
-		"rekor": "^0.2.0"
+		"rekor": "^0.2.0",
+		"sharp": "0.35.5"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.20.7",
