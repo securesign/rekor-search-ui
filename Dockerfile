@@ -12,8 +12,17 @@ RUN npm ci --ignore-scripts --network-timeout=100000 || \
 COPY . .
 RUN npm run build
 
+# Policy stage
+FROM registry.redhat.io/ubi9/ubi@sha256:5f08e80aa970ae77712e75e5e857ac0b396abc900823c4d041c1150a9538a13f AS policy
+RUN update-crypto-policies --set DEFAULT:PQ
+
 # Production Stage
 FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:0b7921813c7dac5259be5b2597c3bdd87231ed9b22573d7063052dc343eed251 as production
+
+COPY --from=policy /etc/crypto-policies/back-ends/ /etc/crypto-policies/back-ends/
+COPY --from=policy /etc/crypto-policies/state/ /etc/crypto-policies/state/
+COPY --from=policy /etc/crypto-policies/config /etc/crypto-policies/config
+
 USER 1001
 EXPOSE 3000
 
