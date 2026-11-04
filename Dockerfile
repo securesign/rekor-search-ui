@@ -1,5 +1,5 @@
 # Builder Stage
-FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:7e0cae2be048049c6c052ca1b7d402301679fcd53b3bcf53ea3d90c96c9c5b72 as builder
+FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:3f4f3c85e5d993c2a4aa932e25846de7bdc65cf1d4a4e50c71f2f29014a93153 as builder
 USER root
 
 COPY package.json package-lock.json ./
@@ -13,11 +13,11 @@ COPY . .
 RUN npm run build
 
 # Policy stage
-FROM registry.redhat.io/ubi9/ubi@sha256:5f08e80aa970ae77712e75e5e857ac0b396abc900823c4d041c1150a9538a13f AS policy
+FROM registry.redhat.io/ubi9/ubi@sha256:8f989cc9270da6abec0144c22846ed1e6e92e462dc7768ce0981c4ac1d574733 AS policy
 RUN update-crypto-policies --set DEFAULT:PQ
 
 # Production Stage
-FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:7e0cae2be048049c6c052ca1b7d402301679fcd53b3bcf53ea3d90c96c9c5b72 as production
+FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:3f4f3c85e5d993c2a4aa932e25846de7bdc65cf1d4a4e50c71f2f29014a93153 as production
 
 COPY --from=policy /etc/crypto-policies/back-ends/ /etc/crypto-policies/back-ends/
 COPY --from=policy /etc/crypto-policies/state/ /etc/crypto-policies/state/
