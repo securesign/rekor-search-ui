@@ -24,7 +24,7 @@ jest.mock("@peculiar/x509", () => ({
 		usages: 3,
 	})),
 	SubjectAlternativeNameExtension: jest.fn().mockImplementation(() => ({
-		names: [],
+		names: { toJSON: () => [{ type: "dns", value: "example.com" }] },
 	})),
 	SubjectKeyIdentifierExtension: jest.fn().mockImplementation(() => ({
 		keyId: "01020304",
@@ -63,13 +63,13 @@ describe("EXTENSIONS_CONFIG", () => {
 		expect(result).toEqual(["Digital Signature", "Non Repudiation"]);
 	});
 
-	it.skip("should map '2.5.29.17' to Subject Alternative Name", () => {
+	it("should map '2.5.29.17' to Subject Alternative Name", () => {
 		const rawExtension = {
 			rawData: new Uint8Array([1, 2, 3, 4]),
 			value: new Uint8Array([5, 6, 7, 8]),
 		};
 		const result = EXTENSIONS_CONFIG["2.5.29.17"].toJSON(rawExtension as any);
-		expect(result).toEqual({ names: [] });
+		expect(result).toEqual([{ type: "dns", value: "example.com" }]);
 	});
 
 	it("should map '2.5.29.19' to Basic Constraints", () => {
