@@ -1,5 +1,5 @@
 # Builder Stage
-FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:2804c52255d5e01ce6cb3002531ac52cf30cb014633a8d02aea80145773c07d1 as builder
+FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:3f4f3c85e5d993c2a4aa932e25846de7bdc65cf1d4a4e50c71f2f29014a93153 as builder
 USER root
 
 COPY package.json package-lock.json ./
@@ -12,8 +12,17 @@ RUN npm ci --ignore-scripts --network-timeout=100000 || \
 COPY . .
 RUN npm run build
 
+# Policy stage
+FROM registry.redhat.io/ubi9/ubi@sha256:1963e00991088221a3405be7eb315a3dbc0be0f1f7440f0bd537d481cf33c83e AS policy
+RUN update-crypto-policies --set DEFAULT:PQ
+
 # Production Stage
-FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:2804c52255d5e01ce6cb3002531ac52cf30cb014633a8d02aea80145773c07d1 as production
+FROM registry.redhat.io/rhel9/nodejs-24-minimal@sha256:3f4f3c85e5d993c2a4aa932e25846de7bdc65cf1d4a4e50c71f2f29014a93153 as production
+
+COPY --from=policy /etc/crypto-policies/back-ends/ /etc/crypto-policies/back-ends/
+COPY --from=policy /etc/crypto-policies/state/ /etc/crypto-policies/state/
+COPY --from=policy /etc/crypto-policies/config /etc/crypto-policies/config
+
 USER 1001
 EXPOSE 3000
 
